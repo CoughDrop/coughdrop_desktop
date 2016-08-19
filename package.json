@@ -1,0 +1,31 @@
+{
+  "name": "coughdrop_desktop",
+  "version": "0.0.4",
+  "description": "CoughDrop AAC app, as a desktop app",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron main.js",
+    "package": "electron-packager ./ CoughDrop --overwrite --platform=win32 --arch=all --icon=\"coughdrop.ico\" --ignore=\"build\" --out=\"./build\" --version=0.36.5",
+    "installer": "cd ../coughdrop_desktop_installer && grunt create-windows-installer && move ../coughdrop_desktop_installer/build/installer/64/Setup.exe  ../coughdrop_desktop_installer/build/installer/64/coughdrop-setup.exe && move ../coughdrop_desktop_installer/build/installer/64/Setup.msi  ../coughdrop_desktop_installer/build/installer/64/coughdrop-setup.msi && move ../coughdrop_desktop_installer/build/installer/32/Setup.exe  ../coughdrop_desktop_installer/build/installer/32/coughdrop-setup.exe && move ../coughdrop_desktop_installer/build/installer/32/Setup.msi  ../coughdrop_desktop_installer/build/installer/32/coughdrop-setup.msi",
+    "install-eyex": "npm install c:\\Users\\Brian\\Workspace\\eyex",
+    "rebuild-eyex": ".\\node_modules\\.bin\\electron-rebuild -f -w eyex"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/coughdrop/coughdrop-desktop.git"
+  },
+  "keywords": [
+    "CoughDrop",
+    "AAC"
+  ],
+  "author": "CoughDrop, Inc.",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://coughdrop.zendesk.com/hc"
+  },
+  "homepage": "https://www.mycoughdrop.com",
+  "dependencies": {
+    "gazelinger": "https://github.com/CoughDrop/gazelinger.git",
+    "eyex": "https://github.com/coughdrop/eyex.git"
+  }
+}
