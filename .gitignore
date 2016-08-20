@@ -1,5 +1,6 @@
 *.dll
 *.lib
+AcaTTS.ini
 Update.exe
 node_modules/**
 www/assets/**
@@ -13,3 +14,5 @@ www/customizations.txt
 www/manifest.json
 www/manifest.mobile.json
 www/ngrams.arpa.json
+www/index.html
+www/index.css

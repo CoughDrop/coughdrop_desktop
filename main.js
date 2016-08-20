@@ -9,10 +9,12 @@ if(process.arch == 'ia32') {
 // http://www.mylifeforthecode.com/creating-a-windows-distribution-of-an-electron-app-using-squirrel/
 var squirrel_app = require('app');
 var path = require('path');
-var extra_tts = require('acapela/extra_tts.js');
 var cp = require('child_process');
+var migrator = require('migrator');
+var extra_tts = require('acapela/extra-tts');
 
 console.log("ARCH: " + process.arch);
+console.log("NODE VERSION: " + process.versions.node);
 
 var handleSquirrelEvent = function() {
   if (process.platform != 'win32') {
@@ -28,9 +30,12 @@ var handleSquirrelEvent = function() {
     });
   };
 
-  function install(done) {
+  function install(real_done, app_version) {
     var target = path.basename(process.execPath);
-    executeSquirrelCommand(["--createShortcut", target], done);
+    migrator.start(app_version, function() {
+      executeSquirrelCommand(["--createShortcut=coughdrop.exe", target],real_done);            
+    })
+    console.log("installing");
   };
 
   function uninstall(done) {
@@ -38,16 +43,23 @@ var handleSquirrelEvent = function() {
     executeSquirrelCommand(["--removeShortcut", target], done);
   };
 
+  function save_data_dir(done, app_version) {
+    var dest_data_dir = path.resolve(path.dirname(process.execPath), '..', 'data');
+    var src_data_dir = path.resolve(path.dirname(process.execPath), 'data');
+    migrator.preserve(app_version, done);
+  };
+
   var squirrelEvent = process.argv[1];
+  var app_version = process.argv[2];
   switch (squirrelEvent) {
     case '--squirrel-install':
-      install(squirrel_app.quit);
+      install(squirrel_app.quit, app_version);
       return true;
     case '--squirrel-updated':
-      install(squirrel_app.quit);
+      install(squirrel_app.quit, app_version);
       return true;
     case '--squirrel-obsolete':
-      squirrel_app.quit();
+      save_data_dir(squirrel_app.quit, app_version);
       return true;
     case '--squirrel-uninstall':
       uninstall(squirrel_app.quit);
@@ -118,7 +130,7 @@ app.on('ready', function() {
   mainWindow.loadURL('file://' + __dirname + '/www/desktop_index.html');
   
   // Open the DevTools.
-//   mainWindow.webContents.openDevTools();
+   //mainWindow.webContents.openDevTools();
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function() {
@@ -143,32 +155,33 @@ ipcMain.on('eye-gaze-unsubscribe', function(event, args) {
   gazelinger.stop_listening()
 });
 
-ipcMain.on('extra-tts-download-file', function(event, str) {
-  var sender = event.sender;
-  var opts = JSON.parse(str);
-  console.log("downloading file on main process");
-  extra_tts.download_file(opts.url, opts.path, function(percent, done, error) {
-    sender.send('extra-tts-download-file-progress', JSON.stringify({
-      size: size,
-      done: done,
-      error: error
-    });
-  });
-});
-
-ipcMain.on('extra-tts-unzip-file', function(event, str) {
-  var sender = event.sender;
-  var opts = JSON.parse(str);
-  console.log("unzipping file on main process");
-  extra_tts.unzip_file(opts.file, opts.dir, function(percent, done, error) {
-    sender.set('extra-tts-upzip-file-progress', JSON.stringify({
-      entries: entries,
-      done: done,
-      error: error
-    });
-  });
-});
-
-ipcMain.on('extra-tts-ready', function() {
+ipcMain.on('extra-tts-ready', function(event, args) {
   event.sender.send('extra-tts-ready', 'ready');
+});
+
+ipcMain.on('extra-tts-exec', function(event, message) {
+  var sender = event.sender;
+  var opts = JSON.parse(message);
+  opts.args[0].success = function(res) {
+    sender.send('extra-tts-exec-result', JSON.stringify({
+      success: true,
+      callback_id: opts.success_id,
+      result: res
+    });
+  };
+  opts.args[0].progress = function(res) {
+    sender.send('extra-tts-exec-result', JSON.stringify({
+      success: true,
+      callback_id: opts.progress_id,
+      result: res
+    });
+  };
+  opts.args[0].error = function(res) {
+    sender.send('extra-tts-exec-result', JSON.stringify({
+      success: true,
+      callback_id: opts.error_id,
+      result: res
+    });
+  };
+  extra_tts[opts.method].apply(extra_tts, opts.args);
 });

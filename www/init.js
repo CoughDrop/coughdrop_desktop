@@ -1,4 +1,11 @@
 (function() {
+  window.time_log = function (str) {
+    var stamp = Math.round(new Date().getTime() / 1000 % 100 * 100) / 100;
+    console.log(str + "  :" + stamp);
+  };
+  
+  time_log("init started");
+
   // hacky fix for fixed position keyboard bug in ios
   window.scrollTo(document.body.scrollLeft, document.body.scrollTop);
   
@@ -23,13 +30,14 @@
   }
   function hideSplash() {
     if(navigator && navigator.splashscreen && navigator.splashscreen.hide) {
+      window.splash_hidden = true;
       setTimeout(navigator.splashscreen.hide, 500);
     } else {
       setTimeout(hideSplash, 200);
     }
   }
   function checkState() {
-    console.log("COUGHDROP: checking state...");
+    time_log("COUGHDROP: checking state...");
     window.load_state = window.load_state || {};
     if(!window.FileReader) {
       hideSplash();
@@ -62,6 +70,7 @@
       } else if(!window.load_state.js_really_still_loading) {
         window.trackJs && window.trackJs.track("slow init");
         window.load_state.js_really_still_loading = true;
+        hideSplash();
         loadingSay("initialization is taking longer than expected...");
         setTimeout(checkState, 30000);
       } else {
@@ -77,7 +86,14 @@
     }
   }
   setTimeout(checkState, 500);
-  window.capabilities = {installed_app: true, api_host: "https://www.mycoughdrop.com"};
+  setTimeout(function() {
+    if(!window.splash_hidden) {
+      console.error("splash screen wasn't hidden");
+      window.trackJs && window.trackJs.track("splash screen wasn't hidden");
+    }
+  }, 30000);
+  window.app_version = "2016.08.20";
+  window.capabilities = {installed_app: true, api_host: "https://www.mycoughdrop.com", wait_for_deviceready: true};
   navigator.standalone = navigator.standalone || (navigator.userAgent.match(/android/i) && navigator.userAgent.match(/chrome/i) && (screen.height-document.documentElement.clientHeight<40));
   var elem = document.getElementById('enabled_frontend_features');
   window.enabled_frontend_features = [];

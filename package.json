@@ -1,14 +1,20 @@
 {
   "name": "coughdrop_desktop",
-  "version": "0.0.4",
+  "productName": "CoughDrop",
+  "version": "16.08.20",
   "description": "CoughDrop AAC app, as a desktop app",
   "main": "main.js",
   "scripts": {
     "start": "electron main.js",
-    "package": "electron-packager ./ CoughDrop --overwrite --platform=win32 --arch=all --icon=\"coughdrop.ico\" --ignore=\"build\" --out=\"./build\" --version=0.36.5",
-    "installer": "cd ../coughdrop_desktop_installer && grunt create-windows-installer && move ../coughdrop_desktop_installer/build/installer/64/Setup.exe  ../coughdrop_desktop_installer/build/installer/64/coughdrop-setup.exe && move ../coughdrop_desktop_installer/build/installer/64/Setup.msi  ../coughdrop_desktop_installer/build/installer/64/coughdrop-setup.msi && move ../coughdrop_desktop_installer/build/installer/32/Setup.exe  ../coughdrop_desktop_installer/build/installer/32/coughdrop-setup.exe && move ../coughdrop_desktop_installer/build/installer/32/Setup.msi  ../coughdrop_desktop_installer/build/installer/32/coughdrop-setup.msi",
+    "package": "electron-packager ./ CoughDrop --overwrite --platform=win32 --arch=all --icon=\"coughdrop.ico\" --ignore=\"build\" --ignore=\"data\" --out=\"../cdb\" --version=0.36.8 --version-string.CompanyName=\"CoughDrop\" --version-string.ProductName=\"CoughDrop\" && node packaging_cleanup.js",
+    "installer": "cd ../coughdrop_desktop_installer && grunt create-windows-installer && node ../coughdrop_desktop/installer_cleanup.js",
     "install-eyex": "npm install c:\\Users\\Brian\\Workspace\\eyex",
-    "rebuild-eyex": ".\\node_modules\\.bin\\electron-rebuild -f -w eyex"
+    "install-node-version": "node-gyp install --target=0.36.8 --arch=x64 dist-url=https://gh-contractor-zcbenz.s3.amazonaws.com/atom-shell/dist",
+    "rebuild-eyex": "cd ..\\eyex && copy Tobii.EyeX.Client.64.lib Tobii.EyeX.Client.lib /Y && node-gyp clean && timeout 5 && node-gyp configure --target=v0.36.8 --arch=x64 && timeout 5 && node-gyp build && copy build\\Release\\eyex.node eyex.64.node",
+    "rebuild-eyex32": "cd ..\\eyex && copy Tobii.EyeX.Client.32.lib Tobii.EyeX.Client.lib /Y && node-gyp clean && timeout 5 && node-gyp configure --target=v0.36.8 --arch=ia32 && timeout 5 && node-gyp build && copy build\\Release\\eyex.node eyex.32.node",
+    "old-eyex": ".\\node_modules\\.bin\\electron-rebuild -f -v 0.36.8 -w eyex",
+    "rebuild-acapela": "cd ..\\acapela && node-gyp clean && timeout 5 && node-gyp configure --target=v0.36.8 --arch=x64 && timeout 5 && node-gyp build && copy build\\Release\\acapela.node acapela.64.node",
+    "rebuild-acapela32": "cd ..\\acapela && node-gyp clean && timeout 5 && node-gyp configure --target=v0.36.8 --arch=ia32 && timeout 5 && node-gyp build && copy build\\Release\\acapela.node acapela.32.node"
   },
   "repository": {
     "type": "git",
@@ -26,6 +32,14 @@
   "homepage": "https://www.mycoughdrop.com",
   "dependencies": {
     "gazelinger": "https://github.com/CoughDrop/gazelinger.git",
-    "eyex": "https://github.com/coughdrop/eyex.git"
+    "acapela": "https://github.com/coughdrop/acapela.git",
+    "eyetribe": "https://github.com/coughdrop/eyetribe.git",
+    "eyex": "https://github.com/coughdrop/eyex.git",
+    "migrator": "https://github.com/coughdrop/coughdrop_electron_migrator.git",
+    "extract-zip": "^1.5.0",
+    "request": "^2.72.0",
+    "rimraf": "^2.5.2"
+  },
+  "devDependencies": {
   }
 }
