@@ -167,21 +167,27 @@ ipcMain.on('extra-tts-exec', function(event, message) {
       success: true,
       callback_id: opts.success_id,
       result: res
-    });
+    }));
   };
   opts.args[0].progress = function(res) {
     sender.send('extra-tts-exec-result', JSON.stringify({
       success: true,
-      callback_id: opts.progress_id,
+      callback_id: opts.progress_id || opts.success_id,
       result: res
-    });
+    }));
   };
   opts.args[0].error = function(res) {
     sender.send('extra-tts-exec-result', JSON.stringify({
       success: true,
       callback_id: opts.error_id,
       result: res
-    });
+    }));
   };
-  extra_tts[opts.method].apply(extra_tts, opts.args);
+    try {
+        extra_tts[opts.method].apply(extra_tts, opts.args);
+    } catch(e) {
+        console.log("extra-tts error!");
+        console.log(e);
+        opts.args[0].error("uncaught error");
+    }
 });
