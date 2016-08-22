@@ -3,7 +3,7 @@ var path = '../node_modules/gazelinger/electron-listener.js';
 var tts_path = '../node_modules/acapela/extra-tts-ipc.js';
 if(location.pathname) {
   path = location.pathname.replace(/^\//, '').replace(/www\/desktop_index\.html.*$/, 'node_modules/gazelinger/electron-listener.js');
-  tts_path = location.pathname.replace(/^\//, '').replace(/www\/desktop_index\.html.*$/, 'node_modules/acapela/extra-tts.js');
+  tts_path = location.pathname.replace(/^\//, '').replace(/www\/desktop_index\.html.*$/, 'node_modules/acapela/extra-tts-ipc.js');
 }
 var eye_gaze = requireNode(path);
 if(window.capabilities) {
