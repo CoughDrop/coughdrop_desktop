@@ -151,24 +151,35 @@ app.on('window-all-closed', function() {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 app.on('ready', function() {
-  // Create the browser window.
-  var electronScreen = electron.screen;
-  var size = electronScreen.getPrimaryDisplay().workAreaSize;
-  mainWindow = new BrowserWindow({width: size.width - 50, height: size.height - 50});
+  var load_window = function(debug) {
+    // Create the browser window.
+    var electronScreen = electron.screen;
+    var size = electronScreen.getPrimaryDisplay().workAreaSize;
+    mainWindow = new BrowserWindow({width: size.width - 50, height: size.height - 50, title: "CoughDrop"});
 
-  // and load the index.html of the app.
-  mainWindow.loadURL('file://' + __dirname + '/www/desktop_index.html');
+    // and load the index.html of the app.
+    mainWindow.loadURL('file://' + __dirname + '/www/desktop_index.html');
   
-  // Open the DevTools.
-   //mainWindow.webContents.openDevTools();
+    // Emitted when the window is closed.
+    mainWindow.on('closed', function() {
+      // Dereference the window object, usually you would store windows
+      // in an array if your app supports multi windows, this is the time
+      // when you should delete the corresponding element.
+      mainWindow = null;
+    });
+  
+    let contents = mainWindow.webContents;
+  
+    // Open the DevTools.
+    if(debug) {
+      contents.openDevTools();
+    }
 
-  // Emitted when the window is closed.
-  mainWindow.on('closed', function() {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    mainWindow = null;
-  });
+    contents.on('crashed', function() {
+      load_window();
+    });
+  };
+  load_window(false);
 });
 
 var sender = null;
