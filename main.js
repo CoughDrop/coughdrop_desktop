@@ -248,11 +248,11 @@ ipcMain.on('extra-tts-exec', function(event, message) {
       result: res
     }));
   };
-    try {
-        extra_tts[opts.method].apply(extra_tts, opts.args);
-    } catch(e) {
-        console.log("extra-tts error!");
-        console.log(e);
-        opts.args[0].error("uncaught error");
-    }
+  try {
+      extra_tts[opts.method].apply(extra_tts, opts.args);
+  } catch(e) {
+      console.log("extra-tts error!");
+      console.log(e);
+      opts.args[0].error("uncaught error");
+  }
 });
