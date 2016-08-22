@@ -11,6 +11,7 @@ var squirrel_app = require('app');
 var path = require('path');
 var cp = require('child_process');
 var migrator = require('migrator');
+var auto_updater = require('auto-updater');
 var extra_tts = require('acapela/extra-tts');
 
 console.log("ARCH: " + process.arch);
@@ -76,6 +77,7 @@ if (handleSquirrelEvent()) {
 // Auto-check for updates, also pulled from
 // http://www.mylifeforthecode.com/creating-a-windows-distribution-of-an-electron-app-using-squirrel/
 var last_check = null;
+var updated_version = null;
 function check_for_updates() {
   var now = (new Date()).getTime();
   // check for update once every 24 hours
@@ -83,16 +85,44 @@ function check_for_updates() {
     return;
   }
   last_check = (new Date()).getTime();
-  var updateDotExe = path.resolve(path.dirname(process.execPath), '..', 'update.exe');
-  var child = cp.spawn(updateDotExe, ["--update", releases_url], { detached: true });
-  child.on('close', function(code) {
-    // anything you need to do when update is done.
+  auto_updater.setFeedURL(releases_url);
+  auto_updater.on('update-downloaded', function(event, releaseNotes, releaseName, releaseDate, updateURL) {
+    console.log("update available, " + releaseName);
+    updated_version = releaseName;
   });
-  child.on('error', function(err) {
-    console.log("spawn failed");
-    console.log(err);
+  auto_updater.on('update-not-available', function() {
+    setTimeout(check_for_updates, 60 * 1000);
   });
-  setTimeout(check_for_updates, 60 * 1000);
+//   var updateDotExe = path.resolve(path.dirname(process.execPath), '..', 'update.exe');
+//   var child = cp.spawn(updateDotExe, ["--update", releases_url], { detached: true });
+//   child.on('close', function(code) {
+//     // anything you need to do when update is done.
+//   });
+//   var stdout = '';
+//   child.stdout.setEncoding('utf8');
+//   var jsonStarted = false;
+//   child.stdout.on('data', function (d) {
+//     if (!jsonStarted && d.startsWith("{")) {
+//       jsonStarted = true;
+//       return stdout += d; 
+//     }  
+//     if (!jsonStarted) {
+//       return;
+//     } 
+//     return stdout += d; 
+//   });
+//   child.on('close', function(code) {
+//     if (stdout.length > 0) {
+//       var data = JSON.parse(stdout);
+//       if(data.futureVersion) {
+//         updated_version = data.futureVersion;
+//       }
+//     }
+//   });
+//   child.on('error', function(err) {
+//     console.log("spawn failed");
+//     console.log(err);
+//   });
 };
 check_for_updates();
 
@@ -153,6 +183,30 @@ ipcMain.on('eye-gaze-subscribe', function(event, args) {
 ipcMain.on('eye-gaze-unsubscribe', function(event, args) {
   sender = null;
   gazelinger.stop_listening()
+});
+
+ipcMain.on('full-screen', function(event, message) {
+  if(mainWindow) {
+    if(message == 'kiosk') {
+      mainWindow.setKiosk(true);
+    } else if(message == 'fullscreen') {
+      mainWindow.setFullScreen(true);
+    } else {
+      mainWindow.setKiosk(false);
+      mainWindow.setFullScreen(false);
+    }
+  }
+});
+
+ipcMain.on('update-check', function(event, message) {
+  if(updated_version) {
+    event.sender.send('update-available', updated_version);
+  }
+});
+ipcMain.on('update-install', function(event, message) {
+  if(updated_version) {
+    auto_updater.quitAndInstall();
+  }
 });
 
 ipcMain.on('extra-tts-ready', function(event, args) {
