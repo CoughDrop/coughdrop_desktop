@@ -50,6 +50,7 @@ var handleSquirrelEvent = function() {
     migrator.preserve(app_version, done);
   };
 
+  // for testing, you can run update.exe --processStart coughdrop.exe --process-start-args "--squirrel-updated xx.xx.xx"
   var squirrelEvent = process.argv[1];
   var app_version = process.argv[2];
   switch (squirrelEvent) {
