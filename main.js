@@ -221,6 +221,12 @@ ipcMain.on('update-install', function(event, message) {
     auto_updater.quitAndInstall();
   }
 });
+ipcMain.on('debugging-show', function(event, message) {
+  if(mainWindow) {
+    var contents = mainWindow.webContents;
+    contents.openDevTools();
+  }
+});
 
 ipcMain.on('extra-tts-ready', function(event, args) {
   event.sender.send('extra-tts-ready', 'ready');

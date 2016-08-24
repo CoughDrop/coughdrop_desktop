@@ -16,6 +16,12 @@ var tts = requireNode(tts_path);
 if (window.capabilities) {
     window.extra_tts = tts;
     window.capabilities.tts.extra_exec = tts.exec;
+    window.capabilities.debugging = {
+      available: function() { return true; },
+      show: function() {
+        ipcRenderer.send('debugging-show', 'show');
+      }
+    };
 }
 
 window.full_screen = function(go_full) {
