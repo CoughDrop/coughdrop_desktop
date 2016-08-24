@@ -151,6 +151,9 @@ app.on('window-all-closed', function() {
 // initialization and is ready to create browser windows.
 app.on('ready', function() {
   var load_window = function(debug) {
+    if(mainWindow) {
+      mainWindow.destroy();
+    }
     // Create the browser window.
     var electronScreen = electron.screen;
     var size = electronScreen.getPrimaryDisplay().workAreaSize;
