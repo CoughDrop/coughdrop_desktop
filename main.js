@@ -4,19 +4,17 @@ var releases_url = "https://s3.amazonaws.com/coughdrop/installer/windows/x64";
 if(process.arch == 'ia32') {
   releases_url = "https://s3.amazonaws.com/coughdrop/installer/windows/ia32";
 }
-
-// Squirrel-Aware code handling, pulled from
-// http://www.mylifeforthecode.com/creating-a-windows-distribution-of-an-electron-app-using-squirrel/
-var squirrel_app = require('app');
-var path = require('path');
-var cp = require('child_process');
-var migrator = require('migrator');
-var auto_updater = require('auto-updater');
-var extra_tts = require('acapela/extra-tts');
-
 console.log("ARCH: " + process.arch);
 console.log("NODE VERSION: " + process.versions.node);
 
+var path = require('path');
+var cp = require('child_process');
+const {autoUpdater} = require('electron');
+var auto_updater = autoUpdater;
+var extra_tts = require('acapela/extra-tts');
+
+// Squirrel-Aware code handling, pulled from
+// http://www.mylifeforthecode.com/creating-a-windows-distribution-of-an-electron-app-using-squirrel/
 var handleSquirrelEvent = function() {
   if (process.platform != 'win32') {
     return false;
@@ -55,16 +53,16 @@ var handleSquirrelEvent = function() {
   var app_version = process.argv[2];
   switch (squirrelEvent) {
     case '--squirrel-install':
-      install(squirrel_app.quit, app_version);
+      install(app.quit, app_version);
       return true;
     case '--squirrel-updated':
-      install(squirrel_app.quit, app_version);
+      install(app.quit, app_version);
       return true;
     case '--squirrel-obsolete':
-      save_data_dir(squirrel_app.quit, app_version);
+      save_data_dir(app.quit, app_version);
       return true;
     case '--squirrel-uninstall':
-      uninstall(squirrel_app.quit);
+      uninstall(app.quit);
       return true;
   }
 
