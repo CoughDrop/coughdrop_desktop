@@ -92,6 +92,7 @@ function check_for_updates() {
   auto_updater.on('update-not-available', function() {
     setTimeout(check_for_updates, 60 * 1000);
   });
+  auto_updater.checkForUpdates();
 //   var updateDotExe = path.resolve(path.dirname(process.execPath), '..', 'update.exe');
 //   var child = cp.spawn(updateDotExe, ["--update", releases_url], { detached: true });
 //   child.on('close', function(code) {
