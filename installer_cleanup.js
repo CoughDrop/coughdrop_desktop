@@ -1,8 +1,9 @@
 var cp = require('child_process');
 
 var archs = ["64", "32"];
-archs.forEach(function(arch) {
-	var cmd = "move /Y .\\build\\installer\\" + arch + "\\CoughDropSetup.exe .\\build\\installer\\" + arch + "\\coughdrop-setup.exe && move /Y .\\build\\installer\\" + arch + "\\CoughDropSetup.msi  .\\build\\installer\\" + arch + "\\coughdrop-setup.msi";
+archs.forEach(function (arch) {
+    var path = "..\\cdb\\inst\\" + arch;
+    var cmd = "move /Y " + path + "\\CoughDropSetup.exe " + path + "\\coughdrop-setup.exe && move /Y " + path + "\\CoughDropSetup.msi  " + path + "\\coughdrop-setup.msi";
 	var child = cp.exec(cmd);
 
 	child.on('close', function(code) {
