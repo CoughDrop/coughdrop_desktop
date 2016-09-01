@@ -6,7 +6,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron main.js",
-    "package": "electron-packager ./ CoughDrop --overwrite --platform=win32 --arch=all --icon=\"coughdrop.ico\" --ignore=\"build\" --ignore=\"data\" --out=\"../cdb\" --version=1.3.4 --version-string.CompanyName=\"CoughDrop\" --version-string.ProductName=\"CoughDrop\" && node packaging_cleanup.js",
+    "package": "electron-packager ./ CoughDrop --overwrite --prune --platform=win32 --arch=all --icon=\"coughdrop.ico\" --ignore=\"build\" --ignore=\"data\" --out=\"../cdb\" --version=1.3.4 --version-string.CompanyName=\"CoughDrop\" --version-string.ProductName=\"CoughDrop\" && node packaging_cleanup.js",
     "installer": "cd ../coughdrop_desktop_installer && grunt create-windows-installer && node ../coughdrop_desktop/installer_cleanup.js",
     "install-eyex": "npm install c:\\Users\\Brian\\Workspace\\eyex",
     "install-node-version": "node-gyp install --target=1.3.4 --arch=x64 --dist-url=https://gh-contractor-zcbenz.s3.amazonaws.com/atom-shell/dist",
