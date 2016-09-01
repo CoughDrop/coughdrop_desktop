@@ -9,9 +9,10 @@ console.log("NODE VERSION: " + process.versions.node);
 
 var path = require('path');
 var cp = require('child_process');
-const {autoUpdater} = require('electron');
+const {app, autoUpdater} = require('electron');
 var auto_updater = autoUpdater;
-var extra_tts = require('acapela/extra-tts');
+const extra_tts = require('acapela/extra-tts');
+var migrator = require('migrator');
 
 // Squirrel-Aware code handling, pulled from
 // http://www.mylifeforthecode.com/creating-a-windows-distribution-of-an-electron-app-using-squirrel/
@@ -31,6 +32,7 @@ var handleSquirrelEvent = function() {
 
   function install(real_done, app_version) {
     var target = path.basename(process.execPath);
+    var ico = path.resolve(target, "app.ico");
     migrator.start(app_version, function() {
       executeSquirrelCommand(["--createShortcut=coughdrop.exe", target],real_done);            
     })
@@ -129,7 +131,6 @@ check_for_updates();
 const electron = require('electron');
 let gazelinger = require('gazelinger');
 
-const app = electron.app;  // Module to control application life.
 const BrowserWindow = electron.BrowserWindow;  // Module to create native browser window.
 const ipcMain = require('electron').ipcMain;
 
@@ -150,6 +151,8 @@ app.on('window-all-closed', function() {
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
+console.log("PATH");
+console.log(app.getAppPath());
 app.on('ready', function() {
   var load_window = function(debug) {
     if(mainWindow) {
@@ -158,7 +161,7 @@ app.on('ready', function() {
     // Create the browser window.
     var electronScreen = electron.screen;
     var size = electronScreen.getPrimaryDisplay().workAreaSize;
-    mainWindow = new BrowserWindow({width: size.width - 50, height: size.height - 50, title: "CoughDrop"});
+    mainWindow = new BrowserWindow({width: size.width - 50, height: size.height - 50, title: "CoughDrop"});//, icon: '.\\logo.png'});
 
     // and load the index.html of the app.
     mainWindow.loadURL('file://' + __dirname + '/www/desktop_index.html');
