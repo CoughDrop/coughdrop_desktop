@@ -16,6 +16,7 @@ archs.forEach(function(arch) {
     }
     cmd = cmd + " && md ..\\cdb\\CoughDrop-win32-" + arch + "\\bin";
     cmd = cmd + " & copy .\\bin\\* ..\\cdb\\CoughDrop-win32-" + arch + "\\bin /Y";
+    cmd = cmd + " && rm -rf ..\\cdv\\CoughDrop-win32-" + arch + "\\resources\\app\\files";
     var child = cp.exec(cmd);
     console.log("running for " + arch);
     console.log(cmd);
