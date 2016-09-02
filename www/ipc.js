@@ -36,7 +36,7 @@ ipcRenderer.on('update-available', function(event, message) {
   window.CoughDrop.update_version = message;
   window.CoughDrop.install_update = function() {
     ipcRenderer.send('update-install', 'go');
-  }
+  };
 });
 
 coughDropExtras.advance('device');
