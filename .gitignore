@@ -1,5 +1,6 @@
 *.dll
 *.lib
+*.pfx
 AcaTTS.ini
 Update.exe
 node_modules/**
@@ -17,3 +18,8 @@ www/ngrams.arpa.json
 www/index.html
 www/index.css
 www/track_key.js
+bin/**
+build/**
+data/**
+files/**
+old_stuff/**
