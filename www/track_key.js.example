@@ -1,1 +1,11 @@
-window._trackJs = { token: "track_js_token" };
+window._trackJs = { 
+  token: "track_js_token",
+  onError: function(payload, error) {
+    return !!(window._trackJs && !window._trackJs.disabled);
+  } 
+};
+setTimeout(function() {
+  window._trackJs.track = function(data) {
+    if(window.trackJs && window.trackJs.track) { window.trackJs.track(data); }
+  };
+}, 500);

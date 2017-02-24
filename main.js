@@ -94,7 +94,11 @@ function check_for_updates() {
   auto_updater.on('update-not-available', function() {
     setTimeout(check_for_updates, 60 * 1000);
   });
-  auto_updater.checkForUpdates();
+  try {
+    auto_updater.checkForUpdates();
+  } catch(e) {
+    setTimeout(check_for_updates, 60 * 1000);
+  }
 //   var updateDotExe = path.resolve(path.dirname(process.execPath), '..', 'update.exe');
 //   var child = cp.spawn(updateDotExe, ["--update", releases_url], { detached: true });
 //   child.on('close', function(code) {
@@ -164,7 +168,7 @@ app.on('ready', function() {
     mainWindow = new BrowserWindow({width: size.width - 50, height: size.height - 50, title: "CoughDrop"});//, icon: '.\\logo.png'});
 
     // and load the index.html of the app.
-    mainWindow.loadURL('file://' + __dirname + '/www/desktop_index.html');
+    mainWindow.loadURL('file://' + __dirname + '/www/desktop_index.html', {userAgent: 'CoughDrop Desktop App'});
   
     // Emitted when the window is closed.
     mainWindow.on('closed', function() {

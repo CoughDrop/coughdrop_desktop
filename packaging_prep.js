@@ -11,7 +11,7 @@ packager({
   platform: "win32",
   arch: "all",
   icon: "./coughdrop.ico",
-  ignore: ["build", "data"],
+  ignore: ["build", "data", "files"],
   out: "../cdb",
   version: "1.3.4",
   "version-string": {
