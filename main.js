@@ -134,7 +134,6 @@ check_for_updates();
 
 const electron = require('electron');
 let gazelinger = require('gazelinger');
-
 const BrowserWindow = electron.BrowserWindow;  // Module to create native browser window.
 const ipcMain = require('electron').ipcMain;
 
@@ -166,7 +165,7 @@ app.on('ready', function() {
     var electronScreen = electron.screen;
     var size = electronScreen.getPrimaryDisplay().workAreaSize;
     mainWindow = new BrowserWindow({width: size.width - 50, height: size.height - 50, title: "CoughDrop"});//, icon: '.\\logo.png'});
-
+    console.log('file://' + __dirname + "/www/desktop_index.html")
     // and load the index.html of the app.
     mainWindow.loadURL('file://' + __dirname + '/www/desktop_index.html', {userAgent: 'CoughDrop Desktop App'});
   
@@ -193,13 +192,13 @@ app.on('ready', function() {
 });
 
 var sender = null;
-ipcMain.on('eye-gaze-subscribe', function(event, args) {
+ipcMain.on('eye-gaze-subscribe', function(event, level) {
   sender = event.sender;
   gazelinger.listen(function(data) {
     if(sender) {
       sender.send('eye-gaze-data', JSON.stringify(data));
     }
-  });
+  }, level);
 });
 ipcMain.on('eye-gaze-unsubscribe', function(event, args) {
   sender = null;
