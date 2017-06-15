@@ -81,8 +81,8 @@ var last_check = null;
 var updated_version = null;
 function check_for_updates() {
   var now = (new Date()).getTime();
-  // check for update once every 24 hours
-  if(last_check && (now - last_check) < (60 * 60 * 24 * 1000)) {
+  // check for update once every 6 hours
+  if(last_check && (now - last_check) < (60 * 60 * 6 * 1000)) {
     return;
   }
   last_check = (new Date()).getTime();
@@ -95,10 +95,10 @@ function check_for_updates() {
     auto_updater.on('update-not-available', function() {
       setTimeout(check_for_updates, 60 * 1000);
     });
-    
     auto_updater.checkForUpdates();
   } catch(e) {
-    setTimeout(check_for_updates, 60 * 1000);
+    last_check = null;
+    setTimeout(check_for_updates, 5 * 60 * 1000);
   }
 //   var updateDotExe = path.resolve(path.dirname(process.execPath), '..', 'update.exe');
 //   var child = cp.spawn(updateDotExe, ["--update", releases_url], { detached: true });
