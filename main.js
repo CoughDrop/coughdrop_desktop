@@ -201,6 +201,11 @@ ipcMain.on('eye-gaze-subscribe', function(event, level) {
     }
   }, level);
 });
+setInterval(function() {
+  if(sender && gazelinger && gazelinger.statuses) {
+    sender.send('eye-gaze-status', gazelinger.statuses);
+  }
+}, 1000);
 ipcMain.on('eye-gaze-unsubscribe', function(event, args) {
   sender = null;
   gazelinger.stop_listening()

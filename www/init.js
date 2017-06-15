@@ -88,7 +88,7 @@
     }
   }, 30000);
   window.app_version = "2016.08.20";
-  window.capabilities = {installed_app: true, api_host: "https://www.mycoughdrop.com", wait_for_deviceready: true};
+  window.capabilities = {installed_app: true, api_host: "https://app.mycoughdrop.com", wait_for_deviceready: true};
   navigator.standalone = navigator.standalone || (navigator.userAgent.match(/android/i) && navigator.userAgent.match(/chrome/i) && (screen.height-document.documentElement.clientHeight<40));
   var elem = document.getElementById('enabled_frontend_features');
   window.enabled_frontend_features = [];

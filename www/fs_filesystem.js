@@ -38,8 +38,6 @@ var file_storage = {
                   if (!entry_name) {
                     return next_entry();
                   }
-                  console.log(res.path);
-                  console.log(entry_name);
                   file_storage.generate_entry(fs_path.resolve(res.path, entry_name), function(entry) {
                     entries.push(entry);
                     next_entry();
@@ -124,9 +122,12 @@ var file_storage = {
       }
     });
   },
-  root: function(success, error) {
+  root: function (success, error) {
     var root = fs_path.dirname(process.execPath);
     if (fs_path.basename(root).match(/^app/)) {
+      root = fs_path.dirname(root);
+    }
+    if (fs_path.basename(root).match(/^CoughDrop-/)) {
       root = fs_path.dirname(root);
     }
     if (!fs_path.basename(root).match(/coughdrop/)) {
@@ -135,7 +136,7 @@ var file_storage = {
         root = fs_path.dirname(root);
       }
     }
-    if (!fs_path.basename(root).match(/coughdrop/)) {
+    if (!fs_path.basename(root).match(/coughdrop/) && !fs_path.basename(root).match(/cdb/)) {
       console.log("bad path: " + root);
     }
     if(root) {
