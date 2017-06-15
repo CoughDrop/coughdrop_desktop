@@ -86,15 +86,16 @@ function check_for_updates() {
     return;
   }
   last_check = (new Date()).getTime();
-  auto_updater.setFeedURL(releases_url);
-  auto_updater.on('update-downloaded', function(event, releaseNotes, releaseName, releaseDate, updateURL) {
-    console.log("update available, " + releaseName);
-    updated_version = releaseName;
-  });
-  auto_updater.on('update-not-available', function() {
-    setTimeout(check_for_updates, 60 * 1000);
-  });
   try {
+    auto_updater.setFeedURL(releases_url);
+    auto_updater.on('update-downloaded', function(event, releaseNotes, releaseName, releaseDate, updateURL) {
+      console.log("update available, " + releaseName);
+      updated_version = releaseName;
+    });
+    auto_updater.on('update-not-available', function() {
+      setTimeout(check_for_updates, 60 * 1000);
+    });
+    
     auto_updater.checkForUpdates();
   } catch(e) {
     setTimeout(check_for_updates, 60 * 1000);
