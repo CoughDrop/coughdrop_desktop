@@ -7,6 +7,7 @@ if(location.pathname) {
 }
 var eye_gaze = requireNode(path);
 if(window.capabilities) {
+  window.capabilities.eye_gaze = window.capabilities.eye_gaze || {};
   window.capabilities.eye_gaze.listen = eye_gaze.listen;
   window.capabilities.eye_gaze.stop_listening = eye_gaze.stop_listening;
   window.capabilities.eye_gaze.available = true;
@@ -26,13 +27,11 @@ if (window.capabilities) {
 }
 var ds = 0;
 document.addEventListener('keypress', function (e) {
-    if (e.keyCode == 100 || e.keyCode == 68) {
+    if (e.target.tagName != 'INPUT' && e.target.tagName != 'TEXTAREA' && (e.keyCode == 100 || e.keyCode == 68) && !document.getElementById('home_button')) {
         ds++;
-        if (ds >= 3) {
+        if (ds >= 5) {
             ds = 0;
-            if (!document.getElementById('identity')) {
-                ipcRenderer.send('debugging-show', 'show');
-            }
+            ipcRenderer.send('debugging-show', 'show');
         }
     } else {
         ds = 0;

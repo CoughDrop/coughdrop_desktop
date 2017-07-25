@@ -1,3 +1,5 @@
+var ipcRenderer = requireNode('electron').ipcRenderer;
+
 (function() {
   window.time_log = function (str) {
     var stamp = Math.round(new Date().getTime() / 1000 % 100 * 100) / 100;
@@ -55,6 +57,7 @@
         } else {
           hideSplash();
           loadingSay("looks like there might be a problem. You can keep waiting or <a href='https://coughdrop.zendesk.com' target='_blank'>contact support</a>");
+          ipcRenderer.send('debugging-show', 'show');
         }
       }
     } else if(!window.load_state.js_loaded) {
@@ -75,7 +78,8 @@
           loadingSay("there might be a problem with your installation. You can try deleting and re-installing the app, keep waiting, or <a href='https://coughdrop.zendesk.com' target='_blank'>contact support</a>");
         } else {
           hideSplash();
-          loadingSay("something may be broken. You can keep waiting or <a href='https://coughdrop.zendesk.com' target='_blank'>contact support</a>. You may also want to <a href='http://www.whatbrowser.org' target='_blank'>try a different browser</a>.");
+          loadingSay("something appears to be broken. You can keep waiting or <a href='https://coughdrop.zendesk.com' target='_blank'>contact support</a>.");
+          ipcRenderer.send('debugging-show', 'show');
         }
       }
     }
@@ -87,7 +91,7 @@
       window._trackJs && window._trackJs.track("splash screen wasn't hidden");
     }
   }, 30000);
-  window.app_version = "2017.06.15e";
+  window.app_version = "2017.07.05f";
   window.capabilities = {installed_app: true, api_host: "https://app.mycoughdrop.com", wait_for_deviceready: true};
   navigator.standalone = navigator.standalone || (navigator.userAgent.match(/android/i) && navigator.userAgent.match(/chrome/i) && (screen.height-document.documentElement.clientHeight<40));
   var elem = document.getElementById('enabled_frontend_features');
@@ -95,4 +99,5 @@
   if(elem && elem.getAttribute) {
     window.enabled_frontend_features = (elem.getAttribute('data-list') || "").split(/,/);
   }
+  ipcRenderer.send('status-ready', 'loading');
 })();
