@@ -27,26 +27,30 @@ var file_storage = {
         return {
           readEntries: function(success, error) {
             if(res.isDirectory) {
-              fs.readdir(res.path, function(err, list) {
-                if(err) { return error(err); }
-                var entries = [];
-                var next_entry = function () {
-                  if (list.length === 0) {
-                    return success(entries);
-                  }
-                  var entry_name = list.shift();
-                  if (!entry_name) {
-                    return next_entry();
-                  }
-                  file_storage.generate_entry(fs_path.resolve(res.path, entry_name), function(entry) {
-                    entries.push(entry);
-                    next_entry();
-                  }, function(err) {
-                    error(err);
-                  });
-                };
-                next_entry();
-              });
+              try {
+                fs.readdir(res.path, function(err, list) {
+                  if(err) { return error(err); }
+                  var entries = [];
+                  var next_entry = function () {
+                    if (list.length === 0) {
+                      return success(entries);
+                    }
+                    var entry_name = list.shift();
+                    if (!entry_name) {
+                      return next_entry();
+                    }
+                    file_storage.generate_entry(fs_path.resolve(res.path, entry_name), function(entry) {
+                      entries.push(entry);
+                      next_entry();
+                    }, function(err) {
+                      error(err);
+                    });
+                  };
+                  next_entry();
+                });
+              } catch(e) {
+                error(e);
+              }
             } else {
               error("not a directory");
             }
