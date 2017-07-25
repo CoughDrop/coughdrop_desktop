@@ -32,16 +32,16 @@
   },
   "homepage": "https://www.mycoughdrop.com",
   "dependencies": {
-    "gazelinger": "https://github.com/CoughDrop/gazelinger.git",
-    "acapela": "https://github.com/coughdrop/acapela.git",
+    "acapela": "git+https://github.com/CoughDrop/acapela.git",
+    "electron": "1.3.4",
+    "extract-zip": "^1.5.0",
     "eyetribe": "https://github.com/coughdrop/eyetribe.git",
     "eyex": "https://github.com/coughdrop/eyex.git",
+    "form-data": "0.2.0",
+    "gazelinger": "git+https://github.com/CoughDrop/gazelinger.git",
     "migrator": "https://github.com/coughdrop/coughdrop_electron_migrator.git",
-    "extract-zip": "^1.5.0",
     "request": "^2.72.0",
-    "rimraf": "^2.5.2",
-    "electron": "1.3.4",
-    "form-data": "0.2.0"
+    "rimraf": "^2.5.2"
   },
   "devDependencies": {
     "electron": "1.3.4",
