@@ -82,22 +82,37 @@ var updated_version = null;
 function check_for_updates() {
   var now = (new Date()).getTime();
   // check for update once every 6 hours
-  if(last_check && (now - last_check) < (60 * 60 * 6 * 1000)) {
+  if(last_check && (now - last_check) < (6 * 60 * 60 * 1000)) {
     return;
   }
+  console.log("checking for updates...");
   last_check = (new Date()).getTime();
+  var re_checked = false;
   try {
     auto_updater.setFeedURL(releases_url);
     auto_updater.on('update-downloaded', function(event, releaseNotes, releaseName, releaseDate, updateURL) {
       console.log("update available, " + releaseName);
+      re_checked = true;
       updated_version = releaseName;
     });
     auto_updater.on('update-not-available', function() {
+      re_checked = true;
       setTimeout(check_for_updates, 60 * 1000);
     });
+    auto_updater.on('error', function() {
+      last_check = null;
+      re_checked = true;
+      setTimeout(check_for_updates, 5 * 60 * 1000);
+    });
     auto_updater.checkForUpdates();
+    setTimeout(function() {
+      if(!re_checked) {
+        check_for_updates();
+      }
+    }, 60 * 1000);
   } catch(e) {
     last_check = null;
+    re_checked = true;
     setTimeout(check_for_updates, 5 * 60 * 1000);
   }
 //   var updateDotExe = path.resolve(path.dirname(process.execPath), '..', 'update.exe');
@@ -184,6 +199,11 @@ app.on('ready', function() {
     if(debug) {
       contents.openDevTools();
     }
+    setTimeout(function() {
+      if(!mainWindow.status_ready) {
+        contents.openDevTools();
+      }
+    }, 10000);
 
     contents.on('crashed', function() {
       load_window();
@@ -206,9 +226,13 @@ setInterval(function() {
     sender.send('eye-gaze-status', gazelinger.statuses);
   }
 }, 1000);
+
 ipcMain.on('eye-gaze-unsubscribe', function(event, args) {
   sender = null;
   gazelinger.stop_listening()
+});
+ipcMain.on('status-ready', function() {
+  mainWindow.status_ready = true;
 });
 
 ipcMain.on('full-screen', function(event, message) {
