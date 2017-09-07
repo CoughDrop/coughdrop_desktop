@@ -90,20 +90,23 @@ function check_for_updates() {
   var re_checked = false;
   try {
     auto_updater.setFeedURL(releases_url);
-    auto_updater.on('update-downloaded', function(event, releaseNotes, releaseName, releaseDate, updateURL) {
-      console.log("update available, " + releaseName);
-      re_checked = true;
-      updated_version = releaseName;
-    });
-    auto_updater.on('update-not-available', function() {
-      re_checked = true;
-      setTimeout(check_for_updates, 60 * 1000);
-    });
-    auto_updater.on('error', function() {
-      last_check = null;
-      re_checked = true;
-      setTimeout(check_for_updates, 5 * 60 * 1000);
-    });
+    if(!auto_updater.listeners_set) {
+      auto_updater.on('update-downloaded', function(event, releaseNotes, releaseName, releaseDate, updateURL) {
+        console.log("update available, " + releaseName);
+        re_checked = true;
+        updated_version = releaseName;
+      });
+      auto_updater.on('update-not-available', function() {
+        re_checked = true;
+        setTimeout(check_for_updates, 60 * 1000);
+      });
+      auto_updater.on('error', function() {
+        last_check = null;
+        re_checked = true;
+        setTimeout(check_for_updates, 5 * 60 * 1000);
+      });
+    }
+    auto_updater.listeners_set = true;
     auto_updater.checkForUpdates();
     setTimeout(function() {
       if(!re_checked) {
