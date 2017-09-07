@@ -231,6 +231,20 @@ ipcMain.on('eye-gaze-unsubscribe', function(event, args) {
   sender = null;
   gazelinger.stop_listening()
 });
+
+ipcMain.on('eye-gaze-calibrate-check', function(event, args) {
+  if(sender && gazelinger && gazelinger.can_calibrate) {
+    var can_calibrate = gazelinger.can_calibrate();
+    sender.send('eye-gaze-calibrate', JSON.stringify({calibratable: can_calibrate}));
+  }
+});
+
+ipcMain.on('eye-gaze-calibrate', function(event, args) {
+  if(sender && gazelinger && gazelinger.calibrate) {
+    gazelinger.calibrate();
+  }
+});
+
 ipcMain.on('status-ready', function() {
   mainWindow.status_ready = true;
 });

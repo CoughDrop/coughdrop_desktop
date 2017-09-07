@@ -6,6 +6,8 @@ try {
     if (window.capabilities) {
         window.capabilities.eye_gaze.listen = eye_gaze.listen;
         window.capabilities.eye_gaze.stop_listening = eye_gaze.stop_listening;
+        window.capabilities.eye_gaze.calibrate = eye_gaze.calibrate;
+        window.capabilities.eye_gaze.calibratable = eye_gaze.calibratable;
         window.capabilities.eye_gaze.available = true;
     }
 } catch (e) { }
