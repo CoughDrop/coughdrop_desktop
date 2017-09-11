@@ -97,25 +97,31 @@ function check_for_updates() {
         updated_version = releaseName;
       });
       auto_updater.on('update-not-available', function() {
-        re_checked = true;
-        setTimeout(check_for_updates, 60 * 1000);
+        if(!re_checked) {
+            re_checked = true;
+            setTimeout(check_for_updates, 60 * 1000);
+        }
       });
       auto_updater.on('error', function() {
-        last_check = null;
-        re_checked = true;
-        setTimeout(check_for_updates, 5 * 60 * 1000);
+          last_check = null;
+          if(!re_checked) {
+              re_checked = true;
+              setTimeout(check_for_updates, 5 * 60 * 1000);
+          }
       });
     }
     auto_updater.listeners_set = true;
     auto_updater.checkForUpdates();
     setTimeout(function() {
-      if(!re_checked) {
-        check_for_updates();
+        if(!re_checked) {
+            re_checked = true;
+          check_for_updates();
       }
     }, 60 * 1000);
   } catch(e) {
     last_check = null;
     re_checked = true;
+    console.log("scheduled because exception");
     setTimeout(check_for_updates, 5 * 60 * 1000);
   }
 //   var updateDotExe = path.resolve(path.dirname(process.execPath), '..', 'update.exe');
