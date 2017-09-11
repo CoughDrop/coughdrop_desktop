@@ -191,8 +191,9 @@ app.on('ready', function() {
     var size = electronScreen.getPrimaryDisplay().workAreaSize;
     mainWindow = new BrowserWindow({width: size.width - 50, height: size.height - 50, title: "CoughDrop"});//, icon: '.\\logo.png'});
     console.log('file://' + __dirname + "/www/desktop_index.html")
-    // and load the index.html of the app.
-    mainWindow.loadURL('file://' + __dirname + '/www/desktop_index.html', {userAgent: 'CoughDrop Desktop App'});
+      // and load the index.html of the app.
+    var ua = "CoughDrop Desktop App";
+    mainWindow.loadURL('file://' + __dirname + '/www/desktop_index.html', {userAgent: ua, httpReferrer: "https://app.mycoughdrop.com"});
   
     // Emitted when the window is closed.
     mainWindow.on('closed', function() {
@@ -203,7 +204,14 @@ app.on('ready', function() {
     });
   
     let contents = mainWindow.webContents;
-  
+
+    // Some videos (like Vevo) require a valid referer in order to play properly
+    contents.session.webRequest.onBeforeSendHeaders(['https://*.youtube.com/*'], function(details, callback) {
+        var res = {};
+        res.requestHeaders = Object.assign({}, details.requestHeaders);
+        res.requestHeaders['Referer'] = 'https://app.mycoughdrop.com';
+        callback(res);
+    });  
     // Open the DevTools.
     if(debug) {
       contents.openDevTools();
