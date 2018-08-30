@@ -240,7 +240,9 @@ ipcMain.on('eye-gaze-subscribe', function(event, level) {
 });
 setInterval(function() {
   if(sender && gazelinger && gazelinger.statuses) {
-    sender.send('eye-gaze-status', gazelinger.statuses);
+    try {
+      sender.send('eye-gaze-status', gazelinger.statuses);
+    } catch(e) { }
   }
 }, 1000);
 
@@ -330,5 +332,10 @@ ipcMain.on('extra-tts-exec', function(event, message) {
       console.log("extra-tts error!");
       console.log(e);
       opts.args[0].error("uncaught error");
+      sender.send('extra-tts-exec-result', JSON.stringify({
+        success: false,
+        callbac_id: opts.error_id,
+        result: {error: e.message}
+      }));
   }
 });

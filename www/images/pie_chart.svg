@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="svg5401"
+   sodipodi:docname="pie_chart.svg"
+   viewBox="0 0 111.03264 99.916571"
+   sodipodi:version="0.32"
+   version="1.0"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   inkscape:version="0.48.5 r10040"
+   width="100%"
+   height="100%">
+  <defs
+     id="defs5075" />
+  <sodipodi:namedview
+     id="base"
+     bordercolor="#666666"
+     inkscape:pageshadow="2"
+     inkscape:window-y="82"
+     pagecolor="#ffffff"
+     inkscape:window-height="793"
+     inkscape:zoom="1.9221457"
+     inkscape:window-x="995"
+     borderopacity="1.0"
+     inkscape:current-layer="layer1"
+     inkscape:cx="25.109952"
+     inkscape:cy="36.002611"
+     inkscape:window-width="1030"
+     inkscape:pageopacity="0.0"
+     inkscape:document-units="px"
+     showgrid="false"
+     inkscape:window-maximized="0"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
+  <g
+     id="layer1"
+     inkscape:label="Livello 1"
+     inkscape:groupmode="layer"
+     transform="translate(-338.03276,-422.29548)">
+    <path
+       sodipodi:start="2.4807622"
+       sodipodi:end="3.8340917"
+       sodipodi:cx="1463.7111"
+       sodipodi:cy="945.11481"
+       transform="matrix(0.30982572,0.27194384,-0.2719352,0.30981714,205.45936,-219.00206)"
+       inkscape:transform-center-y="-18.549814"
+       inkscape:transform-center-x="-16.169949"
+       d="m 1370.4038,1017.6553 c -34.0323,-43.77503 -33.0576,-105.32353 2.3436,-147.99901 l 90.9637,75.45852 z"
+       sodipodi:type="arc"
+       style="fill:#b0f397;fill-opacity:1;stroke:#000000;stroke-width:5.79519987;stroke-linejoin:round"
+       sodipodi:ry="118.18784"
+       sodipodi:rx="118.18784"
+       id="path3080" />
+    <path
+       sodipodi:start="1.9540619"
+       sodipodi:end="3.8340917"
+       sodipodi:cx="1463.7111"
+       sodipodi:cy="945.11481"
+       transform="matrix(-0.35461985,0.21018799,-0.21019756,-0.35462785,1116.8747,499.72279)"
+       d="m 1419.5146,1054.7279 c -60.5377,-24.409 -89.8257,-93.27191 -65.4167,-153.80957 4.5648,-11.32124 10.8559,-21.86698 18.6495,-31.26204 l 90.9637,75.45852 z"
+       sodipodi:type="arc"
+       style="fill:#fff494;fill-opacity:1;stroke:#000000;stroke-width:5.79519987;stroke-linejoin:round"
+       sodipodi:ry="118.18784"
+       sodipodi:rx="118.18784"
+       id="path3086" />
+    <path
+       sodipodi:start="1.9540619"
+       sodipodi:end="2.7371364"
+       sodipodi:cx="1463.7111"
+       sodipodi:cy="945.11481"
+       transform="matrix(-0.08815072,-0.40270275,0.40270275,-0.08815072,147.44585,1144.8273)"
+       inkscape:transform-center-y="23.850312"
+       inkscape:transform-center-x="20.207606"
+       d="m 1419.5146,1054.7279 c -28.983,-11.686 -52.158,-34.3751 -64.4556,-63.10394 l 108.6521,-46.50915 z"
+       sodipodi:type="arc"
+       style="fill:#63c0fd;fill-opacity:1;stroke:#000000;stroke-width:5.79519987;stroke-linejoin:round"
+       sodipodi:ry="118.18784"
+       sodipodi:rx="118.18784"
+       id="path3088" />
+    <path
+       sodipodi:start="2.4932513"
+       sodipodi:end="3.8340917"
+       sodipodi:cx="1463.7111"
+       sodipodi:cy="945.11481"
+       transform="matrix(0.01502601,-0.41196294,0.41196294,0.01502601,-12.490611,1061.093)"
+       inkscape:transform-center-y="-15.507737"
+       inkscape:transform-center-x="24.297616"
+       d="m 1369.5051,1016.4843 c -33.1494,-43.75633 -31.8063,-104.57763 3.2423,-146.82801 l 90.9637,75.45852 z"
+       sodipodi:type="arc"
+       style="fill:#ffb077;fill-opacity:1;stroke:#000000;stroke-width:5.79519987;stroke-linejoin:round"
+       sodipodi:ry="118.18784"
+       sodipodi:rx="118.18784"
+       id="path4059" />
+    <path
+       sodipodi:start="1.8134906"
+       sodipodi:end="2.7045612"
+       sodipodi:cx="1463.7111"
+       sodipodi:cy="945.11481"
+       transform="matrix(0.36238088,0.19652658,-0.1965166,0.36237429,43.262743,-152.973)"
+       inkscape:transform-center-y="-16.812582"
+       inkscape:transform-center-x="-3.932052"
+       d="m 1435.3083,1059.839 c -34.6509,-8.5786 -63.568,-32.359 -78.6769,-64.70098 l 107.0797,-50.02321 z"
+       sodipodi:type="arc"
+       style="fill:#ff8282;fill-opacity:1;stroke:#000000;stroke-width:5.79519987;stroke-linejoin:round"
+       sodipodi:ry="118.18784"
+       sodipodi:rx="118.18784"
+       id="path4065" />
+  </g>
+  <metadata
+     id="metadata5073">
+    <rdf:RDF>
+      <cc:Work>
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <cc:license
+           rdf:resource="http://creativecommons.org/licenses/publicdomain/" />
+        <dc:publisher>
+          <cc:Agent
+             rdf:about="http://openclipart.org/">
+            <dc:title>Openclipart</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:title>pie chart</dc:title>
+        <dc:date>2008-03-19T23:49:57</dc:date>
+        <dc:description />
+        <dc:source>https://openclipart.org/detail/15877/pie-chart-by-mcol</dc:source>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>mcol</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>chart</rdf:li>
+            <rdf:li>colour</rdf:li>
+            <rdf:li>pie</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/licenses/publicdomain/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+</svg>

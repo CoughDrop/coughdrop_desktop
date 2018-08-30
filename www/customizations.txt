@@ -1,0 +1,68 @@
+ios
+copy splash screen images from www/assets/splash 
+to platforms/ios/CoughDrop/Resources/splash
+
+android
+copy splash screen images from www/assets/splash
+to platforms/android/res
+
+check that icons all got copied correctly
+
+open platforms/android/src/org/apache/cordova/splashscreen/SplashScreen.java
+comment out this.removeSplashScreen();
+... for onPause? or onDestroy?
+
+ios/CoughDrop/CoughDrop-info.plist
+add
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+to support TLS for Amazon
+
+in MainViewController.m:
+
+// http://stackoverflow.com/questions/32743649/hide-shortcut-keyboard-bar-for-uiwebview-in-ios-9
+#import <objc/runtime.h>
+
+- (void) hideKeyboardShortcutBar: (UIView *)view
+{
+    for (UIView *sub in view.subviews) {
+        [self hideKeyboardShortcutBar:sub];
+        if ([NSStringFromClass([sub class]) isEqualToString:@"UIWebBrowserView"]) {
+            
+            Method method = class_getInstanceMethod(sub.class, @selector(inputAccessoryView));
+            IMP newImp = imp_implementationWithBlock(^(id _s) {
+                if ([sub respondsToSelector:@selector(inputAssistantItem)]) {
+                    UITextInputAssistantItem *inputAssistantItem = [sub inputAssistantItem];
+                    inputAssistantItem.leadingBarButtonGroups = @[];
+                    inputAssistantItem.trailingBarButtonGroups = @[];
+                }
+                return nil;
+            });
+            method_setImplementation(method, newImp);
+            
+        }
+    }
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // Do any additional setup after loading the view from its nib.
+    
+    [self hideKeyboardShortcutBar:self.webView];
+}
+
+
+PUBLISHING
+ios
+cordova prepare
+in XCode, Project -> Archive, Upload to App Store
+
+android
+cordova plugin add cordova-plugin-crosswalk-webview
+cordova build android --release -- --gradleArg=-PcdvBuildMultipleApks=true
+cordova plugin remove cordova-plugin-crosswalk-webview
+cordova build android --release -- --gradleArg=-PcdvMinSdkVersion=19 --gradleArg=-PcdvBuildMultipleApks=false
