@@ -5,16 +5,38 @@ premium text-to-speech. Windows-only, currently.
 
 ## To Use
 
+Requires node, npm, grunt
 ```bash
 # Clone this repository
 $ git clone ...
 # Go into the repository
 $ cd ...
 # Install dependencies and run the app
-$ npm install && npm start
+$ npm install
+$ npm start
 ```
 
-Learn more about Electron and its API in the [documentation](http://electron.atom.io/docs/latest).
+If using the eye tracking libraries you may need to recompile them (especially if you update your Electron version)
+```bash
+$ npm run install-node-version
+$ npm run rebuild-eyex
+$ npm run rebuild-eyex32
+# You'll need to change package.json to point to the correct eyex directory
+$ npm run install-eyex
+$ npm run rebuild-acapela
+$ npm run rebuild-acapela32
+# You'll need to change package.json to point to the correct acapela directory
+$ npm run install-acapela
+
+64 and 32-bit libraries are compiled separately for these eye tracking tools. 
+
+Creating a Windows installer is relatively straightforward. If you want a signed package, you'll copy `cdcert.examplejson`
+and set the location and password for the app signing key.
+
+```bash
+$ npm run package
+# Try launching the compiled version at cdb/CoughDrop-win32-XXXX
+$ npm run installer
 
 ### Dependencies
 
