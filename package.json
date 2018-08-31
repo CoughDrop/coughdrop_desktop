@@ -7,15 +7,16 @@
   "scripts": {
     "start": "electron main.js",
     "package": "node packaging_prep.js",
-    "old_package": "node packaging_prep.js x64 && electron-packager ./ CoughDrop --overwrite --prune --asar=true --platform=win32 --arch=all --icon=\"coughdrop.ico\" --ignore=\"build\" --ignore=\"data\" --out=\"../cdb\" --version=1.3.4 --version-string.CompanyName=\"CoughDrop\" --version-string.ProductName=\"CoughDrop\"",
+    "old_package": "node packaging_prep.js x64 && electron-packager ./ CoughDrop --overwrite --prune --asar=true --platform=win32 --arch=all --icon=\"coughdrop.ico\" --ignore=\"build\" --ignore=\"data\" --out=\"../cdb\" --version=1.8.2 --version-string.CompanyName=\"CoughDrop\" --version-string.ProductName=\"CoughDrop\"",
     "installer": "copy template.nuspectemplate node_modules\\electron-winstaller\\template.nuspectemplate /Y && grunt create-windows-installer && node installer_cleanup.js",
     "install-eyex": "npm install c:\\Users\\Brian\\Workspace\\eyex",
-    "install-node-version": "node-gyp install --target=1.3.4 --arch=x64 --dist-url=https://gh-contractor-zcbenz.s3.amazonaws.com/atom-shell/dist",
-    "rebuild-eyex": "cd ..\\eyex && copy Tobii.EyeX.Client.64.lib Tobii.EyeX.Client.lib /Y && node-gyp clean && timeout 5 && node-gyp configure --target=v1.3.4 --arch=x64 && timeout 5 && node ..\\coughdrop_desktop\\fix_node.js && timeout 5 && node-gyp build && copy build\\Release\\eyex.node eyex.64.node",
-    "rebuild-eyex32": "cd ..\\eyex && copy Tobii.EyeX.Client.32.lib Tobii.EyeX.Client.lib /Y && node-gyp clean && timeout 5 && node-gyp configure --target=v1.3.4 --arch=ia32 && timeout 5 && node ..\\coughdrop_desktop\\fix_node.js && timeout 5 && node-gyp build && copy build\\Release\\eyex.node eyex.32.node",
-    "old-eyex": ".\\node_modules\\.bin\\electron-rebuild -f -v 1.3.4 -w eyex",
-    "rebuild-acapela": "cd ..\\acapela && node-gyp clean && timeout 5 && node-gyp configure --target=v1.3.4 --arch=x64 && timeout 5 && node ..\\coughdrop_desktop\\fix_node.js && timeout 5 && node-gyp build && copy build\\Release\\acapela.node acapela.64.node",
-    "rebuild-acapela32": "cd ..\\acapela && node-gyp clean && timeout 5 && node-gyp configure --target=v1.3.4 --arch=ia32 && timeout 5 && node ..\\coughdrop_desktop\\fix_node.js && timeout 5 && node-gyp build && copy build\\Release\\acapela.node acapela.32.node"
+    "install-node-version": "node node-gyp-install.js",
+    "rebuild-eyex": "rebuild-eyex.cmd x64 64",
+    "rebuild-eyex32": "rebuild-eyex.cmd ia32 32",
+    "old-eyex": ".\\node_modules\\.bin\\electron-rebuild -f -v 1.8.2 -w eyex",
+    "install-acapela": "npm install c:\\Users\\Brian\\Workspace\\acapela2",
+    "rebuild-acapela": "rebuild-acapela.cmd x64 64",
+    "rebuild-acapela32": "rebuild-acapela.cmd ia32 32"
   },
   "repository": {
     "type": "git",
