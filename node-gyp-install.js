@@ -6,7 +6,7 @@ var ev = require('./electron-version.js');
 
 console.log("ensuring correct node-gyp, " + ev.version);
 
-var cmd = "node-gyp install --target=1.8.2 --arch=x64 --dist-url=https://atom.io/download/electron";
+var cmd = "node-gyp install --target=" + ev.version + " --arch=x64 --dist-url=https://atom.io/download/electron";
 var child = cp.exec(cmd);
 console.log(cmd);
 
