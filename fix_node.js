@@ -66,4 +66,4 @@ command.add({ cmd: cmd, description: "fixing node release at " + path });
 cmd = "copy " + path + "\\ia32\\iojs.lib " + path + "\\ia32\\node.lib /Y && copy " + path + "\\x64\\iojs.lib " + path + "\\x64\\node.lib /Y";
 command.add({ cmd: cmd });
 
-command.begin();
+// command.begin();
