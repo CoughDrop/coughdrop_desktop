@@ -9,5 +9,6 @@ www/track_key.js
 bin/**
 build/**
 data/**
+edge/**
 files/**
 old_stuff/**
