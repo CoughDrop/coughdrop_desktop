@@ -168,7 +168,7 @@ let mainWindow;
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function() {
-  gazelinger.stop_listening();
+    if(gazelinger) { gazelinger.stop_listening(); }
 
   // On OS X it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
@@ -231,12 +231,14 @@ app.on('ready', function() {
 
 var sender = null;
 ipcMain.on('eye-gaze-subscribe', function(event, level) {
-  sender = event.sender;
-  gazelinger.listen(function(data) {
-    if(sender) {
-      sender.send('eye-gaze-data', JSON.stringify(data));
+    sender = event.sender;
+    if(gazelinger) {
+        gazelinger.listen(function(data) {
+            if(sender) {
+                sender.send('eye-gaze-data', JSON.stringify(data));
+            }
+        }, level);
     }
-  }, level);
 });
 setInterval(function() {
   if(sender && gazelinger && gazelinger.statuses) {
@@ -247,8 +249,10 @@ setInterval(function() {
 }, 1000);
 
 ipcMain.on('eye-gaze-unsubscribe', function(event, args) {
-  sender = null;
-  gazelinger.stop_listening()
+    sender = null;
+    if(gazelinger) {
+        gazelinger.stop_listening();
+    }
 });
 
 ipcMain.on('eye-gaze-calibrate-check', function(event, args) {
@@ -327,7 +331,13 @@ ipcMain.on('extra-tts-exec', function(event, message) {
     }));
   };
   try {
-      extra_tts[opts.method].apply(extra_tts, opts.args);
+      if(!extra_tts) {
+          console.error("extra_tts not defined");
+      } else if(!extra_tts[opts.method]) {
+          console.error("extra_tts." + opts.method + " not defined");
+      } else {
+          extra_tts[opts.method].apply(extra_tts, opts.args);
+      }
   } catch(e) {
       console.log("extra-tts error!");
       console.log(e);
