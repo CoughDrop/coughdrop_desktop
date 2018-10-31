@@ -11,6 +11,8 @@
     "installer": "copy template.nuspectemplate node_modules\\electron-winstaller\\template.nuspectemplate /Y && grunt create-windows-installer && node installer_cleanup.js",
     "install-eyex": "npm install c:\\Users\\Brian\\Workspace\\eyex",
     "install-node-version": "node node-gyp-install.js",
+    "rebuild-sapi": "rebuild-sapi.cmd x64 64",
+    "rebuild-sapi32": "rebuild-sapi.cmd ia32 32",
     "rebuild-eyex": "rebuild-eyex.cmd x64 64",
     "rebuild-eyex32": "rebuild-eyex.cmd ia32 32",
     "old-eyex": ".\\node_modules\\.bin\\electron-rebuild -f -v 1.8.2 -w eyex",
@@ -34,6 +36,7 @@
   "homepage": "https://www.mycoughdrop.com",
   "dependencies": {
     "acapela": "git+https://github.com/CoughDrop/acapela.git",
+    "sapi_tts": "git+https://github.com/CoughDrop/sapi_tts.git",
     "electron": "2.0.4",
     "extract-zip": "^1.5.0",
     "eyetribe": "https://github.com/coughdrop/eyetribe.git",
