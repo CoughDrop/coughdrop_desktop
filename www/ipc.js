@@ -28,6 +28,13 @@ try {
     }
 } catch (e) { }
 
+try {
+    var tts = requireNode('sapi_tts/tts.js');
+    if(tts && tts.enabled) {
+        window.TTS = tts;
+    }    
+} catch(e) { }
+
 var ds = 0;
 document.addEventListener('keypress', function (e) {
     if (e.target.tagName != 'INPUT' && e.target.tagName != 'TEXTAREA' && (e.keyCode == 100 || e.keyCode == 68) && !document.getElementById('home_button')) {

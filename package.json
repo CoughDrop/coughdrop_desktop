@@ -15,7 +15,6 @@
     "rebuild-sapi32": "rebuild-sapi.cmd ia32 32",
     "rebuild-eyex": "rebuild-eyex.cmd x64 64",
     "rebuild-eyex32": "rebuild-eyex.cmd ia32 32",
-    "old-eyex": ".\\node_modules\\.bin\\electron-rebuild -f -v 1.8.2 -w eyex",
     "install-acapela": "npm install c:\\Users\\Brian\\Workspace\\acapela2",
     "rebuild-acapela": "rebuild-acapela.cmd x64 64",
     "rebuild-acapela32": "rebuild-acapela.cmd ia32 32"

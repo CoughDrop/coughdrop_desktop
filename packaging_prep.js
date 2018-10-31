@@ -18,7 +18,7 @@ packager({
   icon: "./coughdrop.ico",
   ignore: ["build", "data", "files"],
   out: "../cdb",
-  version: "1.3.4",
+  version: "2.0.4", // 1.3.4
   appVersion: version,
   "version-string": {
     FileDescription: "CoughDrop",
@@ -41,6 +41,8 @@ packager({
       console.log("installed temporarily to " + path);
       var cmd = "md " + path + "\\resources\\app\\node_modules\\form-data";
       cmd = cmd + "  & xcopy .\\node_modules\\form-data\\* " + path + "\\resources\\app\\node_modules\\form-data /Y /S";
+      cmd = cmd + "  & xcopy .\\node_modules\\psl\\data\\* " + path + "\\resources\\app\\node_modules\\psl\\data\\ /Y /S";
+      cmd = cmd + "  & xcopy .\\node_modules\\ajv\\lib\\* " + path + "\\resources\\app\\node_modules\\ajv\\lib\\ /Y /S";
       cmd = cmd + " && echo a && xcopy .\\bin " + path + "\\bin /Y /E /I";
       cmd = cmd + " && echo b && copy .\\AcaTTS.* " + path + " /Y";
       cmd = cmd + " && echo c && copy .\\coughdrop.ico " + path + " /Y";
@@ -48,12 +50,12 @@ packager({
 //      cmd = cmd + " && echo d && rmdir " + path + "\\resources\\app\\files /s /q";
       if (arch == 'x64') {
           cmd = cmd + " && echo e && copy ..\\eyex\\lib\\x64\\Tobii.EyeX.*.dll " + path + " /Y";
-          cmd = cmd + " && echo f && copy ..\\eyex\\eyex.64.node " + path + "\\resources\\app\\node_modules\\eyex\\eyex.node /Y";
-          cmd = cmd + " && echo g && copy ..\\acapela\\acapela.64.node " + path + "\\resources\\app\\node_modules\\acapela\\acapela.node /Y";
+//          cmd = cmd + " && echo f && copy ..\\eyex\\eyex.64.node " + path + "\\resources\\app\\node_modules\\eyex\\eyex.node /Y";
+//          cmd = cmd + " && echo g && copy ..\\acapela\\acapela.64.node " + path + "\\resources\\app\\node_modules\\acapela\\acapela.node /Y";
       } else {
           cmd = cmd + " && echo h && copy ..\\eyex\\lib\\x86\\Tobii.EyeX.*.dll " + path + " /Y";
-          cmd = cmd + " && echo j && copy ..\\acapela\\acapela.32.node " + path + "\\resources\\app\\node_modules\\acapela\\acapela.node /Y";
-          cmd = cmd + " && echo i && copy ..\\eyex\\eyex.32.node " + path + "\\resources\\app\\node_modules\\eyex\\eyex.node /Y";
+//          cmd = cmd + " && echo j && copy ..\\acapela\\acapela.32.node " + path + "\\resources\\app\\node_modules\\acapela\\acapela.node /Y";
+//          cmd = cmd + " && echo i && copy ..\\eyex\\eyex.32.node " + path + "\\resources\\app\\node_modules\\eyex\\eyex.node /Y";
       }
       cmd = cmd + " && echo \"done with actions\"";
       var child = cp.exec(cmd);
@@ -74,12 +76,11 @@ packager({
       });
 
   }]
-}, function (err, appPaths) {
-
+}).then(function (appPaths) {
+    console.log("done!");
+    console.log(appPaths);
+    appPaths.forEach(function(path) {
+        var cmd = "md " + path + "\\edge && xcopy .\\edge " + path + "\\edge /Y /S";
+        cp.exec(cmd);
+    });
 });
-//console.log("cleaning up!");
-//console.log(JSON.stringify(process.argv));
-//arch = process.argv[2];
-//var archs = ["x64", "ia32"];
-//archs.forEach(function(arch) {
-//});
