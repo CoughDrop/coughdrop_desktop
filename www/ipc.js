@@ -37,11 +37,25 @@ try {
 
 var ds = 0;
 document.addEventListener('keypress', function (e) {
-    if (e.target.tagName != 'INPUT' && e.target.tagName != 'TEXTAREA' && (e.keyCode == 100 || e.keyCode == 68) && !document.getElementById('home_button')) {
-        ds++;
-        if (ds >= 5) {
+    if (e.target.tagName != 'INPUT' && e.target.tagName != 'TEXTAREA') {
+        if(e.keyCode == 100 || e.keyCode == 68) {
+            if(ds <= 5) {
+                ds++;
+            }
+            if (ds >= 5 && !document.getElementById('home_button')) {
+                ds = 0;
+                ipcRenderer.send('debugging-show', 'show');
+            }
+        } else if(ds >= 5 && (e.keyCode == 98 || e.keyCode == 66)) {
+            if(document.getElementById('home_button')) {
+                ds++;
+                if(ds >= 10) {
+                    ds = 0;
+                    ipcRenderer.send('debugging-show', 'show');
+                }
+            }
+        } else {
             ds = 0;
-            ipcRenderer.send('debugging-show', 'show');
         }
     } else {
         ds = 0;
