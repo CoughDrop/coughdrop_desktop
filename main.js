@@ -4,15 +4,20 @@ var releases_url = "https://s3.amazonaws.com/coughdrop/installer/windows/x64";
 if(process.arch == 'ia32') {
   releases_url = "https://s3.amazonaws.com/coughdrop/installer/windows/ia32";
 }
+
 console.log("ARCH: " + process.arch);
 console.log("NODE VERSION: " + process.versions.node);
+console.log("PLATFORM: " + process.platform);
 
 var path = require('path');
 var cp = require('child_process');
 const {app, autoUpdater} = require('electron');
 var auto_updater = autoUpdater;
-const extra_tts = require('acapela/extra-tts');
 var migrator = require('migrator');
+
+if (process.platform != 'darwin') {
+  const extra_tts = require('acapela/extra-tts');
+}
 
 // Squirrel-Aware code handling, pulled from
 // http://www.mylifeforthecode.com/creating-a-windows-distribution-of-an-electron-app-using-squirrel/
@@ -331,7 +336,7 @@ ipcMain.on('extra-tts-exec', function(event, message) {
     }));
   };
   try {
-      if(!extra_tts) {
+      if(typeof extra_tts == "undefined") {
           console.error("extra_tts not defined");
       } else if(!extra_tts[opts.method]) {
           console.error("extra_tts." + opts.method + " not defined");
