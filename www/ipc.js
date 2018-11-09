@@ -4,8 +4,22 @@ try {
     var path = 'gazelinger/electron-listener.js';
     var eye_gaze = requireNode(path);
     if (window.capabilities) {
-        window.capabilities.eye_gaze.listen = eye_gaze.listen;
-        window.capabilities.eye_gaze.stop_listening = eye_gaze.stop_listening;
+        // listen should be idempotent, we don't actually
+        // care how many times we subscribe to it because
+        // events happens through a different channel, so
+        // we just need to tell it to broadcast at least once.
+        // listen() is getting called on every board change,
+        // so let's definitely not queue up a ton of extra events.
+        window.capabilities.eye_gaze.listen = function() {
+            if(!window.capabilities.eye_gaze.listening) {
+                window.capabilities.eye_gaze.listening = true;
+                return eye_gaze.listen();
+            } else { return true; }
+        };
+        window.capabilities.eye_gaze.stop_listening = function() {
+            window.capabilities.eye_gaze.listening = false;
+            return eye_gaze.stop_listening();
+        };
         window.capabilities.eye_gaze.calibrate = eye_gaze.calibrate;
         window.capabilities.eye_gaze.calibratable = eye_gaze.calibratable;
         window.capabilities.eye_gaze.available = true;
