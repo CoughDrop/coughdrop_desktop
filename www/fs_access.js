@@ -127,6 +127,9 @@ var file_storage = {
     });
   },
   root: function (success, error) {
+    // TODO: for packaged apps, this should use process.env.APPDATA/coughdrop
+    // TODO: build a migration flow to move files from current location
+    // to AppData, so we never have to do this again
     var root = fs_path.dirname(process.execPath);
     if (fs_path.basename(root).match(/^app/)) {
       root = fs_path.dirname(root);
