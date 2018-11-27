@@ -27,6 +27,7 @@ $ npm run rebuild-acapela
 $ npm run rebuild-acapela32
 # You'll need to change package.json to point to the correct acapela directory
 $ npm run install-acapela
+```
 
 64 and 32-bit libraries are compiled separately for these eye tracking tools. 
 
@@ -74,19 +75,9 @@ Note that there are some relative paths in `package.json` and `packing_prep.js` 
 you may want to get rid of, but I need them for my computer because otherwise it gives
 me errors about the full path being too long :-/. Windows development is awesome.
 
-Speaking of Windows, if you're looking to compile for both 64-bit and 32-bit, you'll 
-want to check out the following commands (stored in `package.json`):
-
-```bash
-npm run install-node-version
-npm run rebuild-eyex
-npm run rebuild-eyex32
-npm run rebuild-acapela
-npm run rebuild-acapela32
-```
 
 ### License
 
-Copyright (C) 2014-2016 CoughDrop, Inc.
+Copyright (C) 2014-2018 CoughDrop, Inc.
 
 Licensed under the AGPLv3 license.
