@@ -14,6 +14,7 @@
   <files>
     <file src="locales\**" target="lib\net45\locales" />
     <file src="resources\**" target="lib\net45\resources" />
+    <file src="edge\**" target="lib\net45\edge" />
     <file src="bin\**" target="lib\net45\bin" />
     <file src="*.bin" target="lib\net45" />
     <file src="*.dll" target="lib\net45" />
