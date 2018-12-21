@@ -127,86 +127,171 @@ var file_storage = {
     });
   },
   root: function (success, error) {
-    // TODO: for packaged apps, this should use process.env.APPDATA/coughdrop
-    // TODO: build a migration flow to move files from current location
-    // to AppData, so we never have to do this again
-    var root = fs_path.dirname(process.execPath);
-    if (fs_path.basename(root).match(/^app/)) {
-      root = fs_path.dirname(root);
-    }
-    if (fs_path.basename(root).match(/^CoughDrop-/)) {
-      root = fs_path.dirname(root);
-    }
-    if (!fs_path.basename(root).match(/cougrop/)) {
-      root = process.cwd();
-      if (fs_path.basename(root).match(/^app/)) {
-        root = fs_path.dirname(root);
-      }
-    }
-    if (!fs_path.basename(root).match(/coughdrop/) && !fs_path.basename(root).match(/cdb/)) {
-      console.log("bad path: " + root);
-    }
-    if(root) {
-      file_storage.generate_entry(fs_path.resolve(root, 'files'), function(e) {
-        if (success) { success(e); }
-      }, function(err) {
-        if (error) { error(err); }
-      }, { create_dir: true });
-    } else {
-      error("no root entry found");
-    }
-  },
-  legacy_voices: function(success) {
-    var root = fs_path.dirname(process.execPath);
-    if (fs_path.basename(root).match(/^app/)) {
-      root = fs_path.dirname(root);
-    }
-    if (fs_path.basename(root).match(/^CoughDrop-/)) {
-      root = fs_path.dirname(root);
-    }
-    if (!fs_path.basename(root).match(/cougrop/)) {
-      root = process.cwd();
-      if (fs_path.basename(root).match(/^app/)) {
-        root = fs_path.dirname(root);
-      }
-    }
-    var data_dir = fs_path.resolve(root, 'data');
-    var match_voices = [];
-    fs.readdir(data_dir, function(err, langs) {
-      var next_lang = function() {
-        if(langs.length > 0) {
-          var lang_dir = fs_path.resolve(data_dir, langs.shift());
-          fs.stat(lang_dir, function(err, lang) {
-            if(lang.isDirectory()) {
-              fs.readdir(lang_dir, function(err, voices) {
-                var next_voice = function() {
-                  if(voices.length > 0) {
-                    var voice_name = voices.shift();
-                    var voice_dir = fs_path.resolve(lang_dir, voice_name);
-                    fs.stat(voice_dir, function(err, voice) {
-                      if(voice && voice.isDirectory() && voice_name.match(/22k/)) {
-                        match_voices.push(voice_name.split(/22k/)[0]);
-                      }
-                      next_voice();
-                    });
-                  } else {
-                    next_lang();
-                  }
-
-                };
-                next_voice();
-              });
-            } else {
-              next_lang();
-            }
-          });
-        } else {
-          console.log(match_voices);
-          success(match_voices);
+    // TODO: to support packaged apps, this should use process.env.LOCALAPPDATA/coughdrop
+    // so first check there, use that if defined
+    var new_root = fs_path.resolve(process.env.LOCALAPPDATA, 'coughdrop');
+    fs.stat(new_root, function(err, stat) {
+      if(stat.isDirectory()) {
+        // try for appdata route first
+        var files_dir = fs_path.resolve(new_root, 'files');
+        fs.mkdir(files_dir, {recursive: true}, function(err, res) {
+          if(err) {
+            if(error) { error(err); }
+          } else {
+            file_storage.generate_entry(files_dir, function(e) {
+              if(success) { success(e); }
+            }, function(err) {
+              if(error) { error(err); }
+            });
+          }
+        });
+      } else {
+        // fall back to old-school route
+        var root = file_storage.old_school_root_path();
+        if (!fs_path.basename(root).match(/coughdrop/) && !fs_path.basename(root).match(/cdb/)) {
+          console.log("bad path: " + root);
         }
-      };
-      next_lang();
+        if(root) {
+          file_storage.generate_entry(fs_path.resolve(root, 'files'), function(e) {
+            if (success) { success(e); }
+          }, function(err) {
+            if (error) { error(err); }
+          }, { create_dir: true });
+        } else {
+          error("no root entry found");
+        }
+      }
     });
+  },
+  old_school_root_path: function() {
+    var root = fs_path.dirname(process.execPath);
+    if (fs_path.basename(root).match(/^app/)) {
+      root = fs_path.dirname(root);
+    }
+    if (fs_path.basename(root).match(/^CoughDrop-/)) {
+      root = fs_path.dirname(root);
+    }
+    if (!fs_path.basename(root).match(/coughdrop/)) {
+      root = process.cwd();
+      if (fs_path.basename(root).match(/^app/)) {
+        root = fs_path.dirname(root);
+      }
+    }
+    return root;
+  },
+  upgrade_voices: function(version, find_voice) {
+    if(!window.extra_tts) {
+      console.error("can't upgrade voices without extra_tts installed");
+      return;
+    }
+    // if the current voice data is outdated or missing,
+    // download and extract the newest /bin folder and
+    // new voices to a temporary location, then when everything
+    // is in place go ahead and copy to the correct location
+    file_storage.voice_content(function(data) {
+      var current_version = parseFloat(data.version.replace(/_/, '.'));
+      if(!current_version || current_version < version) {
+        var tmp_path = fs_path.resolve(process.env.LOCALAPPDATA, 'coughdrop', 'tmp_engine');
+        // assert tmp_path
+        var next_voice = function() {
+          var voice_id = data.voices.shift();
+          if(voice_id) {
+            console.log("upgrading", voice_id);
+            var voice = find_foice(voice_id);
+            window.extra_tts.download_voice({
+              voice_id: voice_id,
+              base_dir: tmp_path,
+              language_dir: voice.get('language_dir'),
+              acapela_version: version,
+              binary_url: voice.get('binary_url'),
+              language_url: voice.get('language_url'),
+              voice_url: voice.get('voice_url'),
+              success: function() {
+                console.log("done with", voice_id);
+                next_voice();
+              },
+              error: function(err) { 
+                console.error("error upgrading voice", err);
+              }
+            });
+          } else {
+            // move contents out of the tmp path into their new home
+            // then call window.speecher.refresh_voices
+
+            // xcopy src dest /e /y /i
+            var dest = fs_path.resolve(process.env.LOCALAPPDATA, 'coughdrop');
+            var child = cp.exec("xcopy /y /e /i \"" + tmp_path + "\" \"" + dest + "\"", function(err) {
+              if (err) { console.log("error moving speech from " + tmp_path + " to " + dest); console.log(err); }
+              if(window.speecher) {
+                window.speecher.refresh_voices();
+              }
+              // done!
+            });
+          }
+        };
+        next_voice();
+      }
+    });
+  },
+  voice_content: function(success) {
+    // return {
+    //   version: '9_300',
+    //   voices: []
+    // };
+    var new_dir = fs_path.resolve(process.env.LOCALAPPDATA, 'coughdrop');
+    fs.stat(new_dir, function(err, stat) {
+      if(!err && stat && stat.isDirectory()) {
+        handle_dir(new_dir);
+      } else {
+        handle_dir(file_storage.old_school_root_path());
+      }
+    })
+    // search for a bin and data folder
+    // which should include a Selector2.conf file telling us the
+    // version of the engine currently in use. If that version
+    // doesn't match the expected version, we should run an
+    // upgrade process
+    var handle_dir = function(coughdrop_dir) {
+      fs.stat(fs_path.resolve(coughdrop_dir, 'bin'), function(err, stat) {
+        if(stat && stat.isDirectory()) {
+          fs.readFile(fs_path.resolve(coughdrop_dir, 'bin', 'Selector2.conf'), 'utf8', function(err, data) {
+            console.log(data);
+            var version = data.match(/Version=([\d_]+)/)[1];
+            version = version.split(/_/).slice(0, 1).join('_');
+            fs.readdir(fs_path.resolve(coughdrop_dir, 'data'), function(err, list) {
+              list = list || [];
+              var names = [];
+              var next_dir = function() {
+                var lang = list.shift();
+                if(lang) {
+                  fs.stat(fs_path.resolve(coughdrop_dir, 'data', lang), function(err, stat) {
+                    if(stat.isDirectory()) {
+                      fs.readdir(fs_path.resolve(coughdrop_dir, 'data', lang), function(err, list) {
+                        list.forEach(function(voice) {
+                          if(voice.match(/22k/)) {
+                            names.push('acap:' + voice.split(/22k/)[0]);
+                          }
+                        });
+                        next_dir();
+                      });
+                    } else {
+                      next_dir();
+                    }
+                  });
+                } else {
+                  var res = {
+                    version: version,
+                    voices: names
+                  };
+                  console.log(res);
+                  success(res);
+                }
+              };
+            });
+          });
+        }
+      });
+    };
   }
 };
 window.file_storage = file_storage;
