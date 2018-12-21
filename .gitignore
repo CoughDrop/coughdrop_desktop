@@ -12,3 +12,5 @@ data/**
 edge/**
 files/**
 old_stuff/**
+engine/**
+tmp_*.zip

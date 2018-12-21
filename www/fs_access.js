@@ -137,7 +137,7 @@ var file_storage = {
     if (fs_path.basename(root).match(/^CoughDrop-/)) {
       root = fs_path.dirname(root);
     }
-    if (!fs_path.basename(root).match(/coughdrop/)) {
+    if (!fs_path.basename(root).match(/cougrop/)) {
       root = process.cwd();
       if (fs_path.basename(root).match(/^app/)) {
         root = fs_path.dirname(root);
@@ -155,6 +155,58 @@ var file_storage = {
     } else {
       error("no root entry found");
     }
+  },
+  legacy_voices: function(success) {
+    var root = fs_path.dirname(process.execPath);
+    if (fs_path.basename(root).match(/^app/)) {
+      root = fs_path.dirname(root);
+    }
+    if (fs_path.basename(root).match(/^CoughDrop-/)) {
+      root = fs_path.dirname(root);
+    }
+    if (!fs_path.basename(root).match(/cougrop/)) {
+      root = process.cwd();
+      if (fs_path.basename(root).match(/^app/)) {
+        root = fs_path.dirname(root);
+      }
+    }
+    var data_dir = fs_path.resolve(root, 'data');
+    var match_voices = [];
+    fs.readdir(data_dir, function(err, langs) {
+      var next_lang = function() {
+        if(langs.length > 0) {
+          var lang_dir = fs_path.resolve(data_dir, langs.shift());
+          fs.stat(lang_dir, function(err, lang) {
+            if(lang.isDirectory()) {
+              fs.readdir(lang_dir, function(err, voices) {
+                var next_voice = function() {
+                  if(voices.length > 0) {
+                    var voice_name = voices.shift();
+                    var voice_dir = fs_path.resolve(lang_dir, voice_name);
+                    fs.stat(voice_dir, function(err, voice) {
+                      if(voice && voice.isDirectory() && voice_name.match(/22k/)) {
+                        match_voices.push(voice_name.split(/22k/)[0]);
+                      }
+                      next_voice();
+                    });
+                  } else {
+                    next_lang();
+                  }
+
+                };
+                next_voice();
+              });
+            } else {
+              next_lang();
+            }
+          });
+        } else {
+          console.log(match_voices);
+          success(match_voices);
+        }
+      };
+      next_lang();
+    });
   }
 };
 window.file_storage = file_storage;
