@@ -31,6 +31,7 @@ try {
     var tts = requireNode(tts_path);
     if (window.capabilities) {
         tts.reload = tts.reload || function () { };
+        tts.base_dir = fs_path.resolve(process.env.LOCALAPPDATA, 'coughdrop');
         window.extra_tts = tts;
         window.capabilities.tts.extra_exec = tts.exec;
         window.capabilities.debugging = {
