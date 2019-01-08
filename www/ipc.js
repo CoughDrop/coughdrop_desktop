@@ -3,6 +3,7 @@ var ipcRenderer = requireNode('electron').ipcRenderer;
 try {
     var path = 'gazelinger/electron-listener.js';
     var eye_gaze = requireNode(path);
+    var fs_path = requireNode('path');
     if (window.capabilities) {
         // listen should be idempotent, we don't actually
         // care how many times we subscribe to it because
@@ -41,7 +42,7 @@ try {
             }
         };
     }
-} catch (e) { }
+} catch (e) { debugger }
 
 try {
     var tts = requireNode('sapi_tts/tts.js');

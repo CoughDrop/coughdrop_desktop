@@ -127,15 +127,14 @@ var file_storage = {
     });
   },
   root: function (success, error) {
-    // TODO: to support packaged apps, this should use process.env.LOCALAPPDATA/coughdrop
-    // so first check there, use that if defined
+    // to support packaged apps, this should use process.env.LOCALAPPDATA/coughdrop
+    // so first check there, only use fallback if inaccessible
     var new_root = fs_path.resolve(process.env.LOCALAPPDATA, 'coughdrop');
     fs.stat(new_root, function(err, stat) {
-      if(stat.isDirectory()) {
-        // try for appdata route first
+      var local_is_ready = function() {
         var files_dir = fs_path.resolve(new_root, 'files');
         fs.mkdir(files_dir, {recursive: true}, function(err, res) {
-          if(err) {
+          if(err && err.code != 'EEXIST') {
             if(error) { error(err); }
           } else {
             file_storage.generate_entry(files_dir, function(e) {
@@ -145,21 +144,31 @@ var file_storage = {
             });
           }
         });
+      };
+      if(stat && stat.isDirectory()) {
+        // try for appdata route first
+        local_is_ready();
       } else {
-        // fall back to old-school route
-        var root = file_storage.old_school_root_path();
-        if (!fs_path.basename(root).match(/coughdrop/) && !fs_path.basename(root).match(/cdb/)) {
-          console.log("bad path: " + root);
-        }
-        if(root) {
-          file_storage.generate_entry(fs_path.resolve(root, 'files'), function(e) {
-            if (success) { success(e); }
-          }, function(err) {
-            if (error) { error(err); }
-          }, { create_dir: true });
-        } else {
-          error("no root entry found");
-        }
+        fs.mkdir(new_root, {recursive: true}, function(err, res) {
+          if(err) {
+            // fall back to old-school route
+            var root = file_storage.old_school_root_path();
+            if (!fs_path.basename(root).match(/coughdrop/) && !fs_path.basename(root).match(/cdb/)) {
+              console.log("bad path: " + root);
+            }
+            if(root) {
+              file_storage.generate_entry(fs_path.resolve(root, 'files'), function(e) {
+                if (success) { success(e); }
+              }, function(err) {
+                if (error) { error(err); }
+              }, { create_dir: true });
+            } else {
+              error("no root entry found");
+            }
+          } else {
+            local_is_ready();
+          }
+        });
       }
     });
   },
@@ -180,6 +189,9 @@ var file_storage = {
     return root;
   },
   upgrade_voices: function(version, find_voice) {
+    // currently unused. It turns out if you include the old
+    // TTSNlp files in the /bin folder then it will support
+    // legacy voice just fine.
     if(!window.extra_tts) {
       console.error("can't upgrade voices without extra_tts installed");
       return;
@@ -252,6 +264,7 @@ var file_storage = {
     // doesn't match the expected version, we should run an
     // upgrade process
     var handle_dir = function(coughdrop_dir) {
+      console.log("handle", coughdrop_dir);
       fs.stat(fs_path.resolve(coughdrop_dir, 'bin'), function(err, stat) {
         if(stat && stat.isDirectory()) {
           fs.readFile(fs_path.resolve(coughdrop_dir, 'bin', 'Selector2.conf'), 'utf8', function(err, data) {
@@ -287,6 +300,7 @@ var file_storage = {
                   success(res);
                 }
               };
+              next_dir();
             });
           });
         }
