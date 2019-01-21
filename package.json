@@ -8,7 +8,7 @@
     "start": "electron main.js",
     "package": "node packaging_prep.js",
     "old_package": "node packaging_prep.js x64 && electron-packager ./ CoughDrop --overwrite --prune --asar=true --platform=win32 --arch=all --icon=\"coughdrop.ico\" --ignore=\"build\" --ignore=\"data\" --out=\"../cdb\" --version=1.8.2 --version-string.CompanyName=\"CoughDrop\" --version-string.ProductName=\"CoughDrop\"",
-    "installer": "copy template.nuspectemplate node_modules\\electron-winstaller\\template.nuspectemplate /Y && grunt create-windows-installer && node installer_cleanup.js",
+    "installer": "copy template.nuspectemplate node_modules\\electron-winstaller\\template.nuspectemplate /Y && node installer.js && node installer_cleanup.js",
     "install-eyex": "npm install c:\\Users\\Brian\\Workspace\\eyex",
     "install-node-version": "node node-gyp-install.js",
     "rebuild-sapi": "rebuild-sapi.cmd x64 64",
@@ -48,7 +48,6 @@
   },
   "devDependencies": {
     "electron-packager": "latest",
-    "grunt": "^1.0.1",
-    "grunt-electron-installer": "latest"
+    "electron-winstaller": "latest"
   }
 }
