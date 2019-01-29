@@ -18,6 +18,7 @@
     <file src="bin\**" target="lib\net45\bin" />
     <file src="*.bin" target="lib\net45" />
     <file src="*.dll" target="lib\net45" />
+    <file src="*.ini" target="lib\net45" />
     <file src="*.lib" target="lib\net45" />
     <file src="*.pak" target="lib\net45" />
     <file src="*.ico" target="lib\net45" />
