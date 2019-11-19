@@ -1,5 +1,7 @@
 var fs = requireNode('fs');
 var fs_path = requireNode('path');
+var disk = requireNode('diskusage');
+var os = requireNode('os');
 
 var file_storage = {
   generate_entry: function (path, success, error, opts) {
@@ -152,6 +154,18 @@ var file_storage = {
     } else {
       error("no root entry found");
     }
+  },
+  free_space: function() {
+    let path = os.platform() === 'win32' ? 'c:' : '/';
+    disk.check(path).then(function(info) {
+      // info.available
+      var num = info.available;
+      return {
+        free: num,
+        mb: Math.round(num / 1024 / 1024),
+        gb: Math.round(num * 100 / 1024 / 1024 / 1024) / 100
+      };
+    });
   }
 };
 window.file_storage = file_storage;
