@@ -12,6 +12,7 @@ var cp = require('child_process');
 const {app, autoUpdater} = require('electron');
 var auto_updater = autoUpdater;
 const extra_tts = require('acapela/extra-tts');
+// TODO: we can remove migrator completely come 2020
 var migrator = require('migrator');
 
 // Squirrel-Aware code handling, pulled from
@@ -124,36 +125,6 @@ function check_for_updates() {
     console.log("scheduled because exception");
     setTimeout(check_for_updates, 5 * 60 * 1000);
   }
-//   var updateDotExe = path.resolve(path.dirname(process.execPath), '..', 'update.exe');
-//   var child = cp.spawn(updateDotExe, ["--update", releases_url], { detached: true });
-//   child.on('close', function(code) {
-//     // anything you need to do when update is done.
-//   });
-//   var stdout = '';
-//   child.stdout.setEncoding('utf8');
-//   var jsonStarted = false;
-//   child.stdout.on('data', function (d) {
-//     if (!jsonStarted && d.startsWith("{")) {
-//       jsonStarted = true;
-//       return stdout += d; 
-//     }  
-//     if (!jsonStarted) {
-//       return;
-//     } 
-//     return stdout += d; 
-//   });
-//   child.on('close', function(code) {
-//     if (stdout.length > 0) {
-//       var data = JSON.parse(stdout);
-//       if(data.futureVersion) {
-//         updated_version = data.futureVersion;
-//       }
-//     }
-//   });
-//   child.on('error', function(err) {
-//     console.log("spawn failed");
-//     console.log(err);
-//   });
 };
 check_for_updates();
 
@@ -189,7 +160,14 @@ app.on('ready', function() {
     // Create the browser window.
     var electronScreen = electron.screen;
     var size = electronScreen.getPrimaryDisplay().workAreaSize;
-    mainWindow = new BrowserWindow({width: size.width - 50, height: size.height - 50, title: "CoughDrop"});//, icon: '.\\logo.png'});
+    mainWindow = new BrowserWindow({
+      width: size.width - 50, 
+      height: size.height - 50, 
+      title: "CoughDrop",
+      webPreferences: {
+        nodeIntegration: true
+      }
+    });//, icon: '.\\logo.png'});
     console.log('file://' + __dirname + "/www/desktop_index.html")
       // and load the index.html of the app.
     var ua = "CoughDrop Desktop App";
@@ -206,7 +184,7 @@ app.on('ready', function() {
     let contents = mainWindow.webContents;
 
     // Some videos (like Vevo) require a valid referer in order to play properly
-    contents.session.webRequest.onBeforeSendHeaders(['https://*.youtube.com/*'], function(details, callback) {
+    contents.session.webRequest.onBeforeSendHeaders({urls: ['https://*.youtube.com/*']}, function(details, callback) {
         var res = {};
         res.requestHeaders = Object.assign({}, details.requestHeaders);
         res.requestHeaders['Referer'] = 'https://app.mycoughdrop.com';
@@ -217,7 +195,7 @@ app.on('ready', function() {
       contents.openDevTools();
     }
     setTimeout(function() {
-      if(!mainWindow.status_ready) {
+      if(mainWindow && !mainWindow.status_ready) {
         contents.openDevTools();
       }
     }, 10000);

@@ -6,7 +6,11 @@ var ev = require('./electron-version.js');
 
 console.log("ensuring correct node-gyp, " + ev.version);
 
-var cmd = "node-gyp install --target=" + ev.version + " --arch=x64 --dist-url=https://atom.io/download/electron";
+// This failed unexpectedly because the dist-url didn't have
+// any arm64 resources. I had to manually remove the lookup
+// in nodejs's node-gyp directory to make it work.
+
+var cmd = "node-gyp install --target=" + ev.version + " --arch=x64 --dist-url=https://electronjs.org/headers";
 var child = cp.exec(cmd);
 console.log(cmd);
 
