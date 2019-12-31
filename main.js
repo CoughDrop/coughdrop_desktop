@@ -168,6 +168,8 @@ app.on('ready', function() {
         nodeIntegration: true
       }
     });//, icon: '.\\logo.png'});
+    mainWindow.setMenuBarVisibility(false);
+    mainWindow.autoHideMenuBar = true;
     console.log('file://' + __dirname + "/www/desktop_index.html")
       // and load the index.html of the app.
     var ua = "CoughDrop Desktop App";
