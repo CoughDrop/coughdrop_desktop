@@ -9,15 +9,16 @@
     "package": "node packaging_prep.js",
     "old_package": "node packaging_prep.js x64 && electron-packager ./ CoughDrop --overwrite --prune --asar=true --platform=win32 --arch=all --icon=\"coughdrop.ico\" --ignore=\"build\" --ignore=\"data\" --out=\"../cdb\" --version=1.8.2 --version-string.CompanyName=\"CoughDrop\" --version-string.ProductName=\"CoughDrop\"",
     "installer": "copy template.nuspectemplate node_modules\\electron-winstaller\\template.nuspectemplate /Y && node installer.js && node installer_cleanup.js",
-    "install-eyex": "npm install c:\\Users\\Brian\\Workspace\\eyex",
     "install-node-version": "node node-gyp-install.js",
     "rebuild-sapi": "rebuild-sapi.cmd x64 64",
     "rebuild-sapi32": "rebuild-sapi.cmd ia32 32",
+    "install-sapi": "npm install c:\\Users\\Brian\\Workspace\\sapi_tts",
     "rebuild-eyex": "rebuild-eyex.cmd x64 64",
     "rebuild-eyex32": "rebuild-eyex.cmd ia32 32",
-    "install-acapela": "npm install c:\\Users\\Brian\\Workspace\\acapela2",
+    "install-eyex": "npm install c:\\Users\\Brian\\Workspace\\eyex",
     "rebuild-acapela": "rebuild-acapela.cmd x64 64",
-    "rebuild-acapela32": "rebuild-acapela.cmd ia32 32"
+    "rebuild-acapela32": "rebuild-acapela.cmd ia32 32",
+    "install-acapela": "npm install c:\\Users\\Brian\\Workspace\\acapela"
   },
   "repository": {
     "type": "git",
@@ -35,10 +36,10 @@
   "homepage": "https://www.mycoughdrop.com",
   "dependencies": {
     "acapela": "git+https://github.com/coughdrop/acapela.git",
-    "electron": "3.0.10",
+    "diskusage": "1.1",
+    "electron": "7.1.1",
     "extract-zip": "^1.5.0",
-    "eyetribe": "https://github.com/coughdrop/eyetribe.git",
-    "eyex": "https://github.com/coughdrop/eyex.git",
+    "eyex": "git+https://github.com/CoughDrop/eyex.git",
     "form-data": "0.2.0",
     "diskusage": "1.1",
     "gazelinger": "git+https://github.com/CoughDrop/gazelinger.git",
