@@ -14,7 +14,8 @@ var auto_updater = autoUpdater;
 const extra_tts = require('acapela/extra-tts');
 // TODO: we can remove migrator completely come 2020
 var migrator = require('migrator');
-
+// This supposedly allows cross-origin communication for iframes
+app.commandLine.appendSwitch('disable-site-isolation-trials');
 // Squirrel-Aware code handling, pulled from
 // http://www.mylifeforthecode.com/creating-a-windows-distribution-of-an-electron-app-using-squirrel/
 var handleSquirrelEvent = function() {
