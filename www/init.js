@@ -1,4 +1,4 @@
-var ipcRenderer = requireNode('electron').ipcRenderer;
+var ipcRenderer = window.ipcRenderer;
 
 (function() {
   window.time_log = function (str) {

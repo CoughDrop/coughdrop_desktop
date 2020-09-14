@@ -45,7 +45,8 @@
     "migrator": "https://github.com/coughdrop/coughdrop_electron_migrator.git",
     "request": "^2.72.0",
     "rimraf": "^2.5.2",
-    "sapi_tts": "git+https://github.com/CoughDrop/sapi_tts.git"
+    "sapi_tts": "git+https://github.com/CoughDrop/sapi_tts.git",
+    "win-audio": "^2.0.2"
   },
   "devDependencies": {
     "electron-packager": "latest",

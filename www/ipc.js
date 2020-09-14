@@ -1,10 +1,9 @@
-var ipcRenderer = requireNode('electron').ipcRenderer;
+var ipcRenderer = window.ipcRenderer;
+var fs_path = window.fs_access;
 
 try {
-    var path = 'gazelinger/electron-listener.js';
-    var eye_gaze = requireNode(path);
-    var fs_path = requireNode('path');
-    if (window.capabilities) {
+    var eye_gaze = window.node_extras.eye_gaze;
+    if (window.capabilities  && eye_gaze) {
         // listen should be idempotent, we don't actually
         // care how many times we subscribe to it because
         // events happens through a different channel, so
@@ -28,11 +27,9 @@ try {
 } catch (e) { }
 
 try {
-    var tts_path = 'acapela/extra-tts-ipc.js';
-    var tts = requireNode(tts_path);
-    if (window.capabilities) {
+    var tts = window.node_extras && window.node_extras.tts;
+    if (window.capabilities && tts) {
         tts.reload = tts.reload || function () { };
-        tts.base_dir = fs_path.resolve(process.env.LOCALAPPDATA, 'coughdrop');
         window.extra_tts = tts;
         window.capabilities.tts.extra_exec = tts.exec;
         window.capabilities.debugging = {
@@ -42,10 +39,10 @@ try {
             }
         };
     }
-} catch (e) { debugger }
+} catch (e) { console.error("extra-tts problem", e); debugger }
 
 try {
-    var tts = requireNode('sapi_tts/tts.js');
+    var tts = window.node_extras.sapi;
     if(tts && tts.enabled) {
         window.TTS = tts;
     }    

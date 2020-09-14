@@ -1,3 +1,4 @@
+alert('THIS IS A LEGACY FILE I THINK');
 var fs = requireNode('fs');
 var fs_path = requireNode('path');
 var disk = requireNode('diskusage');

@@ -166,7 +166,8 @@ app.on('ready', function() {
       height: size.height - 50, 
       title: "CoughDrop",
       webPreferences: {
-        nodeIntegration: true
+        nodeIntegration: false,
+        preload: path.join(__dirname, "www", "preload.js")
       }
     });//, icon: '.\\logo.png'});
     mainWindow.setMenuBarVisibility(false);
