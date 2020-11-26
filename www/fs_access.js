@@ -130,9 +130,9 @@ var file_storage = {
     });
   },
   root: function (success, error) {
-    // to support packaged apps, this should use process.env.LOCALAPPDATA/coughdrop
+    // to support packaged apps, this should use process.localdir/coughdrop
     // so first check there, only use fallback if inaccessible
-    var new_root = fs_path.resolve(process.env.LOCALAPPDATA, 'coughdrop');
+    var new_root = fs_path.resolve(process.localdir, 'coughdrop');
     fs.stat(new_root, function(err, stat) {
       var local_is_ready = function() {
         var files_dir = fs_path.resolve(new_root, 'files');
@@ -206,7 +206,7 @@ var file_storage = {
     file_storage.voice_content(function(data) {
       var current_version = parseFloat(data.version.replace(/_/, '.'));
       if(!current_version || current_version < version) {
-        var tmp_path = fs_path.resolve(process.env.LOCALAPPDATA, 'coughdrop', 'tmp_engine');
+        var tmp_path = fs_path.resolve(process.localdir, 'coughdrop', 'tmp_engine');
         // assert tmp_path
         var next_voice = function() {
           var voice_id = data.voices.shift();
@@ -234,7 +234,7 @@ var file_storage = {
             // then call window.speecher.refresh_voices
 
             // xcopy src dest /e /y /i
-            var dest = fs_path.resolve(process.env.LOCALAPPDATA, 'coughdrop');
+            var dest = fs_path.resolve(process.localdir, 'coughdrop');
             var child = cp.exec("xcopy /y /e /i \"" + tmp_path + "\" \"" + dest + "\"", function(err) {
               if (err) { console.log("error moving speech from " + tmp_path + " to " + dest); console.log(err); }
               if(window.speecher) {
@@ -253,7 +253,7 @@ var file_storage = {
     //   version: '9_300',
     //   voices: []
     // };
-    var new_dir = fs_path.resolve(process.env.LOCALAPPDATA, 'coughdrop');
+    var new_dir = fs_path.resolve(process.localdir, 'coughdrop');
     fs.stat(new_dir, function(err, stat) {
       if(!err && stat && stat.isDirectory()) {
         handle_dir(new_dir);
