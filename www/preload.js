@@ -21,7 +21,6 @@ window.fs_access = {
     localdir: process.env.LOCALAPPDATA,
     cwd: process.cwd,
     execPath: process.execPath
-
 };
 
 window.node_extras = {
