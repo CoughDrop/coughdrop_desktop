@@ -3,6 +3,7 @@ var fs_path = window.fs_access;
 var disk = window.fs_access;
 var os = window.fs_access;
 var process = window.fs_access;
+var Buffer = window.fs_access.buffer;
 
 var file_storage = {
   generate_entry: function (path, success, error, opts) {
@@ -311,16 +312,22 @@ var file_storage = {
     };
   },
   free_space: function() {
-    let path = os.platform() === 'win32' ? 'c:' : '/';
-    disk.check(path).then(function(info) {
-      // info.available
-      var num = info.available;
-      return {
-        free: num,
-        mb: Math.round(num / 1024 / 1024),
-        gb: Math.round(num * 100 / 1024 / 1024 / 1024) / 100
-      };
-    });
+    let path = os.platform === 'win32' ? 'c:' : '/';
+    if(disk.check) {
+      disk.check(path).then(function(info) {
+        // info.available
+        var num = info.available;
+        return {
+          free: num,
+          mb: Math.round(num / 1024 / 1024),
+          gb: Math.round(num * 100 / 1024 / 1024 / 1024) / 100
+        };
+      });  
+    } else {
+      return new Promise(function(res, rej) {
+        res({});
+      });
+    }
   }
 };
 window.file_storage = file_storage;

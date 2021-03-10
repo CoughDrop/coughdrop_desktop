@@ -16,11 +16,12 @@ window.fs_access = {
     basename: fs_path.basename,
     resolve: fs_path.resolve,
     dirname: fs_path.dirname,
-    platform: os && os.platform,
+    platform: os && os.platform(),
     check: disk && disk.check,
     localdir: process.env.LOCALAPPDATA,
     cwd: process.cwd,
-    execPath: process.execPath
+    execPath: process.execPath,
+    buffer: Buffer
 };
 
 window.node_extras = {
