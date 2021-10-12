@@ -37,7 +37,7 @@
   "dependencies": {
     "acapela": "git+https://github.com/coughdrop/acapela.git",
     "diskusage": "1.1",
-    "electron": "7.1.1",
+    "electron": "11.5.0",
     "extract-zip": "^1.5.0",
     "eyex": "git+https://github.com/CoughDrop/eyex.git",
     "form-data": "0.2.0",
