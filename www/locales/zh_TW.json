@@ -1,4 +1,5 @@
 {
+  "=== LOCALE: zh_TW =======": "",
   "==== lvl1 ============": "Below are all words for priority level 1 (this string does not need to be translated)",
   "close": "關閉 [[ Close",
   "home": "家 [[ Home",
@@ -4286,5 +4287,10 @@
   "remove_row": "*** Remove Row",
   "add_column": "*** Add Column",
   "remove_column": "*** Remove Column",
-  "rename_board": "*** Rename Board"
+  "rename_board": "*** Rename Board",
+  "ios_head_tracking": "*** The built-in features of Apple Face ID support native head tracking. For devices without Face ID a camera-based head tracker will be used.",
+  "supported_head_trackers": "*** Some devices support hardware-optimized head tracking as part of AR toolsets, for all other devices a camera-based head tracker will be used.",
+  "user_already_has_premium_symbols": "*** Premium symbols have already been enabled for this user",
+  "blocked_cells": "*** Blocked Cells",
+  "error_loading_blocked_cells": "*** There was an error loading blocked cells"
 }

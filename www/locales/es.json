@@ -4287,5 +4287,10 @@
   "n_hits": "0 aciertos || 1 acierto || %{n} hits [[ 0 hits || 1 hit || %{n} hits",
   "n_visible_buttons": "0 botones visibles || 1 botón visible || %{n} botones visibles [[ 0 visible buttons || 1 visible button || %{n} visible buttons",
   "n_buttons": "0 botones || 1 botón || %{n} botones [[ 0 buttons || 1 button || %{n} buttons",
-  "n_supervisors": "0 Supervisores || 1 Supervisor || %{n} Supervisores [[ 0 Supervisors || 1 Supervisor || %{n} Supervisors"
+  "n_supervisors": "0 Supervisores || 1 Supervisor || %{n} Supervisores [[ 0 Supervisors || 1 Supervisor || %{n} Supervisors",
+  "ios_head_tracking": "*** The built-in features of Apple Face ID support native head tracking. For devices without Face ID a camera-based head tracker will be used.",
+  "supported_head_trackers": "*** Some devices support hardware-optimized head tracking as part of AR toolsets, for all other devices a camera-based head tracker will be used.",
+  "user_already_has_premium_symbols": "*** Premium symbols have already been enabled for this user",
+  "blocked_cells": "*** Blocked Cells",
+  "error_loading_blocked_cells": "*** There was an error loading blocked cells"
 }

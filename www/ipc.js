@@ -3,7 +3,7 @@ var fs_path = window.fs_access;
 
 try {
     var eye_gaze = window.node_extras.eye_gaze;
-    if (window.capabilities  && eye_gaze) {
+    if (window.capabilities && eye_gaze) {
         // listen should be idempotent, we don't actually
         // care how many times we subscribe to it because
         // events happens through a different channel, so
@@ -23,6 +23,11 @@ try {
         window.capabilities.eye_gaze.calibrate = eye_gaze.calibrate;
         window.capabilities.eye_gaze.calibratable = eye_gaze.calibratable;
         window.capabilities.eye_gaze.available = true;
+        // TODO: need a way to fall back to camera-based
+        // if no native trackers are available. The current
+        // approach will write the methods, and then they'll
+        // never be defined via app.js
+        window.capabilities.eye_gaze.native = true;
     }
 } catch (e) { }
 
