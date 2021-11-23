@@ -10,4 +10,6 @@ if(json && json['dependencies'] && json['dependencies']['electron']) {
 module.exports = {
     version: version
 };
+// TODO: load OneCore voices,
+// https://mahmood-taghavi.github.io/SAPI_Unifier/
 console.log(module.exports.version);
