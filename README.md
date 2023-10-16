@@ -44,7 +44,7 @@ $ npm run installer
 Someday I'll flesh this out, but in the mean time, here's some notes at least:
 
 - Most dependencies will get installed via `npm install`
-- Acapela voices requires dll files from the vendor, and a `data` folder with language and voice files
+- Acapela voices requires dll files from the vendor, voice and language files will be stored in user profile directories as downloaded
 - LC Technologies requires a vendor-provided dll file, uses contents of `edge` folder
 - Tobii EyeX requires dll from vendor
 - Compiling node modules for (`eyex`, `acapela`) is super gross, half of it is my fault
