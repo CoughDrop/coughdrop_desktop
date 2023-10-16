@@ -80,4 +80,4 @@ me errors about the full path being too long :-/. Windows development is awesome
 
 Copyright (C) 2014-2018 CoughDrop, Inc.
 
-Licensed under the AGPLv3 license.
+Licensed under MIT license.
