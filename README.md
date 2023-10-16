@@ -21,12 +21,16 @@ If using the eye tracking libraries you may need to recompile them (especially i
 $ npm run install-node-version
 $ npm run rebuild-eyex
 $ npm run rebuild-eyex32
-# You'll need to change package.json to point to the correct eyex directory
+# You'll need to change package.json to point to the correct eyex local directory
 $ npm run install-eyex
 $ npm run rebuild-acapela
 $ npm run rebuild-acapela32
-# You'll need to change package.json to point to the correct acapela directory
+# You'll need to change package.json to point to the correct acapela local directory
 $ npm run install-acapela
+$ npm run rebuild-sapi
+$ npm run rebuild-sapi32
+# You'll need to change package.json to point to the correct sapi_tts local library directory
+$ npm run install-sapi
 ```
 
 64 and 32-bit libraries are compiled separately for these eye tracking tools. 
@@ -46,10 +50,11 @@ Someday I'll flesh this out, but in the mean time, here's some notes at least:
 - Most dependencies will get installed via `npm install`
 - Acapela voices requires dll files from the vendor, voice and language files will be stored in user profile directories as downloaded
 - LC Technologies requires a vendor-provided dll file, uses contents of `edge` folder
-- Tobii EyeX requires dll from vendor
+- Tobii EyeX requires dll and other files from the vendor
 - Compiling node modules for (`eyex`, `acapela`) is super gross, half of it is my fault
   and the other half I blame on node-gyp and windows not playing nice together.
-- The `www` folder is populated with compiled content from the main coughdrop repository
+- The `www` folder is populated with compiled content from the main coughdrop repository, 
+  as well as some helper libraries that are used by the main app's `capabilities.js` file.
   
 ## Building
 
