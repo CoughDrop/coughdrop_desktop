@@ -1,7 +1,7 @@
 {
   "name": "coughdrop_desktop",
   "productName": "CoughDrop",
-  "version": "23.7.28",
+  "version": "23.10.4",
   "description": "CoughDrop AAC app, as a desktop app",
   "main": "main.js",
   "scripts": {
