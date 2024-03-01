@@ -80,6 +80,21 @@ Note that there are some relative paths in `package.json` and `packing_prep.js` 
 you may want to get rid of, but I need them for my computer because otherwise it gives
 me errors about the full path being too long :-/. Windows development is awesome.
 
+## Testing 
+Desktop apps, in theory, should run the same as the web version. It is important to test your functionality first on the web, where it is easier to iterate and re-release. If there is an issue on desktop, it's easier to isolate, as it will most likely be found in the desktop source code.
+
+Some areas are more fragile than others. When you first build an app package from a new device or new Electron build, you will want to test the following features to ensure they are working correctly, as misconfigured libraries are possible any time you set things up on a new computer. Remember that some libraries need to be re-compiled for the specific version of Electron that you are using (see above).
+
+- Login works correctly
+- Sync works correctly
+- After sync, close the app, turn off wifi and load the app, symbols should still load correctly
+- Speak Mode should automatically go full screen
+- In user Preferences under voice, Premium Voices should show download link
+- Premium Voices should download correctly when clicked
+- Premium Voices should output speech correctly when selected in Preferences
+- A button that links to a YouTube video should correctly play the video when selected in Speak Mode
+- EyeX or other eye gaze tracking library should work correctly
+
 
 ### License
 
